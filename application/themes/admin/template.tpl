@@ -203,16 +203,10 @@
 				<aside id="logo"><a href="#" class="logo"></a></aside>
 				<div class="divider"></div>
 				<aside id="links">
-					<a href="http://www.fusion-hub.com" target="_blank">FusionHub</a>
-					<a href="http://www.fusion-hub.com/modules" target="_blank">Modules</a>
-					<a href="http://www.fusion-hub.com/themes" target="_blank">Themes</a>
-					<a href="http://www.fusion-hub.com/support" target="_blank">Support</a>
-				</aside>
-				<div class="divider"></div>
-				<aside id="facebook">
-					<h1>Like us on Facebook!</h1>
-					<div id="fb_icon"></div>
-					<a href="http://facebook.com/HeroicForge" target="_blank">HeroicForge</a>
+					<a href="http://dawnbrightsu.ca/" target="_blank">Dawnbrightsu</a>
+					<a href="https://www.dropbox.com/sh/aywltvd7tfygkec/AABS9eE1c7TFtRwLiOw_qdkya?dl=0" target="_blank">Modules</a>
+					<a href="https://www.dropbox.com/sh/90zrpibugqg0qtq/AADiXmElyNgjOlbI-ImGUXena?dl=0" target="_blank">Themes</a>
+					<a href="https://github.com/Dawnbrightsu/FusionCMS/issues" target="_blank">Support</a>
 				</aside>
 				<div class="divider"></div>
 				<aside id="html5">
