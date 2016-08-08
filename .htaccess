@@ -1,0 +1,13 @@
+<ifModule mod_rewrite.c>
+	RewriteEngine On
+        
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ ./index.php?/$1 [L]
+</ifModule>
+
+# Increase cookie security
+<IfModule mod_php5.c>
+  php_value session.cookie_httponly true
+  php_flag magic_quotes_gpc Off
+</IfModule>
