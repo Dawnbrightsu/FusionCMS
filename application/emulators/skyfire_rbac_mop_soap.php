@@ -4,7 +4,7 @@
  * Abstraction layer for supporting different emulators
  */
 
-class Skyfire_soap implements Emulator
+class Skyfire_rbac_mop_soap implements Emulator
 {
 	protected $config;
 	
@@ -96,6 +96,7 @@ class Skyfire_soap implements Emulator
 			"online" => "online",
 			"money" => "money",
 			"totalKills" => "totalKills",
+			"arenaPoints" => "arenaPoints",
 			"totalHonorPoints" => "totalHonorPoints",
 			"position_x" => "position_x",
 			"position_y" => "position_y",
@@ -123,8 +124,6 @@ class Skyfire_soap implements Emulator
 			"maxpower3" => "maxpower3",
 			"maxpower4" => "maxpower4",
 			"maxpower5" => "maxpower5",
-			"maxpower6" => "maxpower6",
-			"maxpower7" => "maxpower7",
 			"strength" => "strength",
 			"agility" => "agility",
 			"stamina" => "stamina",
@@ -167,6 +166,7 @@ class Skyfire_soap implements Emulator
 	 * Array of queries
 	 */
 	protected $queries = array(
+		"get_ip_banned" => "SELECT ip, bandate, bannedby, banreason, unbandate FROM ip_banned WHERE ip=? AND unbandate > ?",
 		"get_character" => "SELECT * FROM characters WHERE guid=?",
 		"get_item" => "SELECT entry, Flags, name, Quality, bonding, InventoryType, MaxDurability, RequiredLevel, ItemLevel, class, subclass, delay, socketColor_1, socketColor_2, socketColor_3, spellid_1, spellid_2, spellid_3, spellid_4, spellid_5, spelltrigger_1, spelltrigger_2, spelltrigger_3, spelltrigger_4, spelltrigger_5, displayid, stat_type1, stat_value1, stat_type2, stat_value2, stat_type3, stat_value3, stat_type4, stat_value4, stat_type5, stat_value5, stat_type6, stat_value6, stat_type7, stat_value7, stat_type8, stat_value8, stat_type9, stat_value9, stat_type10, stat_value10, stackable FROM item_template WHERE entry=?",
 		"get_rank" => "SELECT id id, gmlevel gmlevel, RealmID RealmID FROM account_access WHERE id=?",
@@ -286,6 +286,17 @@ class Skyfire_soap implements Emulator
 	}
 
 	/**
+	 * Send mail via ingame mail to a specific character
+	 * @param String $character
+	 * @param String $subject
+	 * @param String $body
+	 */
+	public function sendMail($character, $subject, $body)
+	{
+		$this->send(".send mail ".$character." \"".$subject."\" \"".$body."\"");
+	}
+
+	/**
 	 * Send console command
 	 * @param String $command
 	 */
@@ -391,17 +402,6 @@ class Skyfire_soap implements Emulator
 			// .send item
 			$this->send("send items ".$character." \"".$subject."\" \"".$body."\"".$item_command[$i]);
 		}
-	}
-
-	/**
-	 * Send mail via ingame mail to a specific character
-	 * @param String $character
-	 * @param String $subject
-	 * @param String $body
-	 */
-	public function sendMail($character, $subject, $body)
-	{
-		$this->send(".send mail ".$character." \"".$subject."\" \"".$body."\"");
 	}
 	
 	/**

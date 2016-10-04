@@ -27,6 +27,9 @@ class Arkcore_soap implements Emulator
 	 * Array of expansion ids and their corresponding names
 	 */
 	protected $expansions = array(
+		6 => "Legion",
+		5 => "Warlords of Draenor",
+		4 => "Mists of Pandaria",
 		3 => "Cataclysm",
 		2 => "WotLK",
 		1 => "TBC",

@@ -1,10 +1,62 @@
-<html>
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>403 Forbidden</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="">
+	<meta name="author" content="roussounelos nikos">
+    <link rel="stylesheet" type="text/css" media="screen, projection" href="../css/main403.css">
+    <link rel="stylesheet" type="text/css" media="all" href="../css/tipsy403.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/forbidden.js"></script>
+    
+    <script type="text/javascript">
+    $(document).ready(function(){
+    	universalPreloader();
+    });
+    
+    $(window).load(function(){
+    
+    	//remove Universal Preloader
+    	universalPreloaderRemove();
+    	rotate();
+        pandaRun();
+    	pandaTalk();
+    
+    	//Tipsy implementation
+    	$('.with-tooltip').tipsy({gravity: $.fn.tipsy.autoNS});
+    });
+    </script>
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>403 - Forbidden</title>
 </head>
 <body>
-
-<p>Directory access is forbidden.</p>
-
+    <div id="wrapper">
+    	<div class="top-left">
+            <div class="not-found-text">
+    		    <h1 class="not-found-text">دسترسی به این صفحه ممنوع است</h1>
+            </div>
+        </div>
+    	<div class="planet">
+    		<div class="panda-wrapper">
+    				<div style="background-position: 0px 0px;" class="panda"></div>
+    				<div style="opacity: 1; bottom: 10px;" class="panda-bubble">
+    					<p> <br> خطای 403 </p>
+    				</div>
+    				<div class="bubble-options">
+    					<p style="opacity: 1; bottom: 10px;" class="panda-bubble"> دسترسی به این صفحه ممنوعه </p>
+    					<p style="opacity: 1; bottom: 10px;" class="panda-bubble"> <br> دنبال چی میگردی ؟ </p>
+    					<p style="opacity: 1; bottom: 10px;" class="panda-bubble"> بسی گشنه گشتم !<br><img style="margin-top:8px" src="../images/other/cookie.png" alt="cookie"> </p>
+    					<p style="opacity: 1; bottom: 10px;" class="panda-bubble"> <br> اصلا اینجا اومدی چیکار ؟ </p>
+    					<p style="opacity: 1; bottom: 10px;" class="panda-bubble"> خودت رو خسته نکن </p>
+    					<p style="opacity: 1; bottom: 10px;" class="panda-bubble"> <br> به اینجا دسترسی نداری </p>
+    					<p style="opacity: 1; bottom: 10px;" class="panda-bubble"> برو یک جا دیگه ! </p>
+    				</div>
+    		</div>
+    		<img style="transform: rotate(-284.8deg);" src="../images/other/planet.png" alt="planet">
+    	</div>
+    </div>
 </body>
 </html>
