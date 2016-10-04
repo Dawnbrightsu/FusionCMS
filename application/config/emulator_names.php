@@ -24,6 +24,7 @@ $emulators = array(
 	"mangoszero_soap" => "MaNGoS Zero (1.12.2) - connected through SOAP",
 	"mangosr2_ra" => "MaNGoS R2 (3.3.5) - connected through RA",
 	"mangosr2_soap" => "MaNGoS R2 (3.3.5) - connected through SOAP",
+	"cmangos_tbc_soap" => "CMaNGoS-TBC (2.4.3) - connected through SOAP",
 	"arcemu" => "ArcEmu (3.3.5)",
 	"summitemu" => "SummitEmu (2.4.3)"
 );
