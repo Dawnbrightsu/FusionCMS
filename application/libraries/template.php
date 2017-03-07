@@ -6,7 +6,7 @@
  * @author Jesper Lindström
  * @author Xavier Geerinck
  * @author Elliott Robbins
- * @link http://fusion-hub.com
+ * @link http://raxezdev.com/fusioncms
  */
 
 class Template
@@ -467,19 +467,19 @@ class Template
 	{
 		// Load the slides from the database
 		$slides_arr = $this->CI->cms_model->getSlides();
-			
-			foreach($slides_arr as $key=>$image)
+
+		foreach($slides_arr as $key=>$image)
+		{
+			if(!preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $image['link']))
 			{
-				if(!preg_match("/http:\/\//i", $image['link']) || !preg_match("/https:\/\//i", $image['link']))
-				{
-					$slides_arr[$key]['link'] = $this->page_url . $image['link'];
-				}
-
-				$slides_arr[$key]['text'] = langColumn($image['text']);
-
-				// Replace {path} by the theme image path
-				$slides_arr[$key]['image'] = preg_replace("/\{path\}/", $this->image_path, $image['image']);
+				$slides_arr[$key]['link'] = $this->page_url . $image['link'];
 			}
+
+			$slides_arr[$key]['text'] = langColumn($image['text']);
+
+			// Replace {path} by the theme image path
+			$slides_arr[$key]['image'] = preg_replace("/\{path\}/", $this->image_path, $image['image']);
+		}
 		
 		return $slides_arr;
 	}

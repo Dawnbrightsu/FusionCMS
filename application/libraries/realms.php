@@ -5,8 +5,7 @@
  * @author Jesper Lindström
  * @author Xavier Geerinck
  * @author Elliott Robbins
- * @author Marvin Wichmann
- * @link http://fusion-hub.com
+ * @link http://raxezdev.com/fusioncms
  */
 
 class Realms
@@ -23,8 +22,6 @@ class Realms
 	private $zones;
 	private $hordeRaces;
 	private $allianceRaces;
-
-	private $defaultEmulator = "trinity_soap";
 
 	public function __construct()
 	{
@@ -46,7 +43,11 @@ class Realms
 		
 		$realms = $this->CI->cms_model->getRealms();
 
-		if($realms != false)
+		if($realms == false)
+		{
+			show_error("Please add at least one realm to the `realms` table!");
+		}
+		else
 		{
 			foreach($realms as $realm)
 			{
@@ -277,28 +278,7 @@ class Realms
 	 */
 	public function getEmulator()
 	{
-		if ($this->realms)
-		{
-			return $this->realms[0]->getEmulator();
-		}
-
-		// Make sure the emulator is installed
-		if(file_exists('application/emulators/'.$this->defaultEmulator.'.php'))
-		{
-			require_once('application/emulators/'.$this->defaultEmulator.'.php');
-		}
-		else
-		{
-			show_error("The entered emulator (".$this->defaultEmulator.") doesn't exist in application/emulators/");
-		}
-
-		$config = array();
-		$config['id'] = 1;
-
-		// Initialize the objects
-		$emulator = new $this->defaultEmulator($config);
-
-		return $emulator;
+		return $this->realms[0]->getEmulator();
 	}
 
 	/**

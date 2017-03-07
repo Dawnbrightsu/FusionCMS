@@ -5,7 +5,7 @@
  * @author Jesper Lindström
  * @author Xavier Geerinck
  * @author Elliott Robbins
- * @link http://fusion-hub.com
+ * @link http://raxezdev.com/fusioncms
  */
 
 class Plugin
