@@ -1,25 +1,14 @@
 <div id="donate">
-	{if $donate_paypal.use || 
-		$donate_paygol.use || 
-		($donate_paymentwall.use || $donate_paymentwall.test_mode && $user_id == $donate_paymentwall.test_user) }
+	{if $donate_paypal.use || $donate_paygol.use}
 		<div id="donate_select">
-			{if $donate_paypal.use}
-				<a href="javascript:void(0)" onClick="Donate.showPayPal(this)" class="nice_active nice_button">{lang("paypal", "donate")}</a>
-			{/if}
-			
-			{if $donate_paygol.use}
-				<a href="javascript:void(0)" onClick="Donate.showPayGol(this)" class="{if !$donate_paypal.use}nice_active{/if} nice_button">{lang("paygol", "donate")}</a>
-			{/if}
-
-			{if $donate_paymentwall.use || ($donate_paymentwall.test_mode && $user_id == $donate_paymentwall.test_user)}
-				<a href="javascript:void(0)" onClick="Donate.showPaymentwall(this)" class="nice_button">Paymentwall</a>
-			{/if}
+			<a href="javascript:void(0)" onClick="Donate.showPayPal(this)" class="nice_active nice_button">{lang("paypal", "donate")}</a>
+			<a href="javascript:void(0)" onClick="Donate.showPayGol(this)" class="{if !$donate_paypal.use}nice_active{/if} nice_button">{lang("paygol", "donate")}</a>
 		</div>
 
 		<div class="ucp_divider"></div>
 
 		{if $donate_paypal.use}
-		<section id="paypal_area" style="display:none;">
+		<section id="paypal_area">
 			<form action="https://www{if $donate_paypal.sandbox}.sandbox{/if}.paypal.com/cgi-bin/webscr" method="post" class="page_form">
 				<div class="right_image"><img src="{$url}application/images/misc/paypal_logo.png" /></div>
 				<input type="hidden" name="cmd" value="_xclick" />
@@ -44,7 +33,7 @@
 		{/if}
 
 		{if $donate_paygol.use}
-		<section id="paygol_area" style="display:none;">
+		<section id="paygol_area" {if $donate_paypal.use}style="display:none;"{/if}>
 			<form action="http://www.paygol.com/micropayment/paynow_post" method="post" class="page_form">
 				<div class="right_image"><img src="{$url}application/images/misc/paygol_logo.png" /></div>
 				<input type="hidden" name="pg_custom" value="{$user_id}">
@@ -62,20 +51,6 @@
 				<input type='submit' value='{lang("pay_paygol", "donate")}' />
 				<div class="clear"></div>
 			</form>
-		</section>
-		{/if}
-
-		{if $donate_paymentwall.use || ($donate_paymentwall.test_mode and $donate_paymentwall.test_user == $user_id) }
-		<section id="paymentwall_area" style="display:none;">
-			<div id="donate">
-				<iframe
-					src="https://wallapi.com/api/ps/?key={$donate_paymentwall.key}&uid={$user_id}&widget={$donate_paymentwall.widget_code}"
-					width="90%"
-					style="margin-left:auto;margin-right:auto;display:block;overflow:auto;"
-					height="600" 
-					frameborder="0">
-				</iframe>
-			</div>
 		</section>
 		{/if}
 	{else}

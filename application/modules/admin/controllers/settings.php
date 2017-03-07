@@ -20,7 +20,7 @@ class Settings extends MX_Controller
 	public function index()
 	{
 		// Change the title
-		$this->administrator->setTitle("تنظیمات");
+		$this->administrator->setTitle("Settings");
 
 		$config['title'] = $this->config->item('title');
 		$config['server_name'] = $this->config->item('server_name');
@@ -58,7 +58,7 @@ class Settings extends MX_Controller
 		$output = $this->template->loadPage("settings.tpl", $data);
 
 		// Put my view in the main box with a headline
-		$content = $this->administrator->box('تنظیمات', $output);
+		$content = $this->administrator->box('Settings', $output);
 
 		// Output my content. The method accepts the same arguments as template->view
 		$this->administrator->view($content, false, "modules/admin/js/settings.js");
@@ -89,28 +89,16 @@ class Settings extends MX_Controller
 
 		switch($this->input->post('disabled_expansions'))
 		{
-			case "wod":
-				$disabled_expansions = array($this->realms->getEmulator()->getExpansionId("Legion"));
-			break;
-
-			case "mop":
-				$disabled_expansions = array($this->realms->getEmulator()->getExpansionId("Warlords of Draenor"), $this->realms->getEmulator()->getExpansionId("Legion"));
-			break;
-
-			case "cata":
-				$disabled_expansions = array($this->realms->getEmulator()->getExpansionId("Mists Of Pandaria"), $this->realms->getEmulator()->getExpansionId("Warlords of Draenor"));
-			break;
-
 			case "wotlk":
-				$disabled_expansions = array($this->realms->getEmulator()->getExpansionId("Cataclysm"), $this->realms->getEmulator()->getExpansionId("Mists Of Pandaria"), $this->realms->getEmulator()->getExpansionId("Warlords of Draenor"), $this->realms->getEmulator()->getExpansionId("Legion"));
+				$disabled_expansions = array($this->realms->getEmulator()->getExpansionId("Cataclysm"));
 			break;
 
 			case "tbc":
-				$disabled_expansions = array($this->realms->getEmulator()->getExpansionId("WotLK"), $this->realms->getEmulator()->getExpansionId("Cataclysm"), $this->realms->getEmulator()->getExpansionId("Mists Of Pandaria"), $this->realms->getEmulator()->getExpansionId("Warlords of Draenor"), $this->realms->getEmulator()->getExpansionId("Legion"));
+				$disabled_expansions = array($this->realms->getEmulator()->getExpansionId("WotLK"), $this->realms->getEmulator()->getExpansionId("Cataclysm"));
 			break;
 
 			case "none":
-				$disabled_expansions = array($this->realms->getEmulator()->getExpansionId("TBC"), $this->realms->getEmulator()->getExpansionId("WotLK"), $this->realms->getEmulator()->getExpansionId("Cataclysm"), $this->realms->getEmulator()->getExpansionId("Mists Of Pandaria"), $this->realms->getEmulator()->getExpansionId("Warlords of Draenor"), $this->realms->getEmulator()->getExpansionId("Legion"));
+				$disabled_expansions = array($this->realms->getEmulator()->getExpansionId("TBC"), $this->realms->getEmulator()->getExpansionId("WotLK"), $this->realms->getEmulator()->getExpansionId("Cataclysm"));
 			break;
 
 			default:
@@ -122,7 +110,7 @@ class Settings extends MX_Controller
 		
 		$fusionConfig->save();
 
-		die('بله');
+		die('yes');
 	}
 
 	public function savePerformance()
@@ -133,7 +121,7 @@ class Settings extends MX_Controller
 		
 		$fusionConfig->save();
 
-		die('بله');
+		die('yes');
 	}
 
 	public function saveSmtp()
@@ -148,6 +136,6 @@ class Settings extends MX_Controller
 		
 		$fusionConfig->save();
 
-		die('بله');
+		die('yes');
 	}
 }

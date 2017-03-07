@@ -5,15 +5,8 @@
  * @version 6.0
  * @author Jesper Lindström
  * @author Xavier Geerinck
- * @link http://fusion-hub.com
+ * @link http://raxezdev.com/fusioncms
  */
-
-/*
-|--------------------------------------------------------------------------
-| License key
-|--------------------------------------------------------------------------
-*/
-$config['licenseKey'] = "rlWxV-wbvM2-9xYJ5-yqUqi-pzfhM-KHvYP-WcVwb-vZGHl-ZFVfV-zfvBv-WwAQD-3ZGSw-ZGMuL-JH5Mz-ZvsD=-=";
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +16,7 @@ $config['licenseKey'] = "rlWxV-wbvM2-9xYJ5-yqUqi-pzfhM-KHvYP-WcVwb-vZGHl-ZFVfV-z
 | An additional password to add another layer of security
 |
 */
-$config['security_code'] = "Test123";
+$config['security_code'] = false;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,28 +26,28 @@ $config['security_code'] = "Test123";
 | Must be located in application/views/NAME and must contain a valid theme manifest
 |
 */
-$config['theme'] = "blueweb";
+$config['theme'] = "default";
 
 /*
 |--------------------------------------------------------------------------
 | Website title
 |--------------------------------------------------------------------------
 */
-$config['title'] = "God Network CMS";
+$config['title'] = "Demo Themes";
 
 /*
 |--------------------------------------------------------------------------
 | Server name
 |--------------------------------------------------------------------------
 */
-$config['server_name'] = "Guardians of Darkness";
+$config['server_name'] = "Demo Themes";
 
 /*
 |--------------------------------------------------------------------------
 | Realmlist
 |--------------------------------------------------------------------------
 */
-$config['realmlist'] = "set realmlist localhost";
+$config['realmlist'] = "Demo Themes";
 
 /*
 |--------------------------------------------------------------------------
@@ -93,7 +86,7 @@ $config['has_smtp'] = 1;
 | WoTLK and Cataclysm.
 |
 */
-$config['disabled_expansions'] = array(3);
+$config['disabled_expansions'] = array();
 
 /*
 |--------------------------------------------------------------------------

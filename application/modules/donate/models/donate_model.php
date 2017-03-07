@@ -10,14 +10,26 @@ class Donate_model extends CI_Model
 				$query = $this->db->query("SELECT * FROM paypal_logs ORDER BY `timestamp` DESC LIMIT 10");
 				break;
 			case 'paygol':
-				$query = $this->db->query("SELECT * FROM `paygol_logs` ORDER BY `timestamp` DESC LIMIT 10");
-				break;
-			case 'paymentwall':
-				$query = $this->db->query("SELECT * FROM `paymentwall_logs` ORDER BY `timestamp` DESC LIMIT 10");
+				$query = $this->db->query("SELECT * FROM paygol_logs ORDER BY `timestamp` DESC LIMIT 10");
 				break;
 		}
-
-		return isset($query) && $query->num_rows() ? $query->result_array() : false;
+		
+		if($query)
+		{
+			if($query->num_rows() > 0)
+			{
+				$result = $query->result_array();
+				return $result;
+			}
+			else 
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public function giveDp($user, $dp)
@@ -29,56 +41,112 @@ class Donate_model extends CI_Model
 	{
 		$query = $this->db->query("SELECT * FROM monthly_income ORDER BY month ASC");
 
-		return $query->num_rows() ? $query->result_array() : false;
+		if($query->num_rows())
+		{
+			$row = $query->result_array();
+
+			return $row;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public function findByEmail($type, $string)
 	{
 		$query = $this->db->query("SELECT * FROM ".$type."_logs WHERE `payer_email` LIKE ?", array("%".$string."%"));
 
-		return $query->num_rows() ? $query->result_array() : false;
+		if($query->num_rows())
+		{
+			$row = $query->result_array();
+
+			return $row;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public function findByTxn($type, $string)
 	{
 		$query = $this->db->query("SELECT * FROM ".$type."_logs WHERE `txn_id` LIKE ?", array("%".$string."%"));
 
-		return $query->num_rows() ? $query->result_array() : false;
+		if($query->num_rows())
+		{
+			$row = $query->result_array();
+
+			return $row;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public function findById($type, $string)
 	{
 		$query = $this->db->query("SELECT * FROM ".$type."_logs WHERE `".(($type == "paygol")?"custom":"user_id")."`=?", array($string));
 
-		return $query->num_rows() ? $query->result_array() : false;
+		if($query->num_rows())
+		{
+			$row = $query->result_array();
+
+			return $row;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public function getPayPalLog($id)
 	{
 		$query = $this->db->query("SELECT * FROM paypal_logs WHERE id=?", array($id));
 
-		return $query->num_rows() ? $query->row_array() : false;
+		if($query->num_rows())
+		{
+			$row = $query->result_array();
+
+			return $row[0];
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public function findByMessageId($type, $string)
 	{
 		$query = $this->db->query("SELECT * FROM ".$type."_logs WHERE `message_id`=?", array($string));
 
-		return $query->num_rows() ? $query->result_array() : false;
+		if($query->num_rows())
+		{
+			$row = $query->result_array();
+
+			return $row;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public function findByNumber($type, $string)
 	{
 		$query = $this->db->query("SELECT * FROM ".$type."_logs WHERE `sender`=?", array($string));
 
-		return $query->num_rows() ? $query->result_array() : false;
-	}
+		if($query->num_rows())
+		{
+			$row = $query->result_array();
 
-	public function findBySignature($type, $string)
-	{
-		$query = $this->db->query("SELECT * FROM ".$type."_logs WHERE `signature` = ?", array($string));
-
-		return $query->num_rows() ? $query->result_array() : false;
+			return $row;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	public function updatePayPal($id, $data)

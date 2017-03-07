@@ -2,11 +2,10 @@
 $active_group = "cms";
 $active_record = TRUE;
 
-$db["cms"]["hostname"] = "localhost";
-$db["cms"]["username"] = "trinity";
-$db["cms"]["password"] = "trinity";
-$db["cms"]["database"] = "fusion";
-$db["cms"]["port"] 	   = 3306;
+$db["cms"]["hostname"] = "127.0.0.1";
+$db["cms"]["username"] = "root";
+$db["cms"]["password"] = "";
+$db["cms"]["database"] = "demo1";
 $db["cms"]["dbdriver"] = "mysqli";
 $db["cms"]["dbprefix"] = "";
 $db["cms"]["pconnect"] = TRUE;
@@ -19,11 +18,10 @@ $db["cms"]["swap_pre"] = "";
 $db["cms"]["autoinit"] = TRUE;
 $db["cms"]["stricton"] = FALSE;
 
-$db["account"]["hostname"] = "localhost";
-$db["account"]["username"] = "trinity";
-$db["account"]["password"] = "trinity";
+$db["account"]["hostname"] = "127.0.0.1";
+$db["account"]["username"] = "root";
+$db["account"]["password"] = "";
 $db["account"]["database"] = "auth";
-$db["account"]["port"]     = 3306;
 $db["account"]["dbdriver"] = "mysqli";
 $db["account"]["dbprefix"] = "";
 $db["account"]["pconnect"] = TRUE;

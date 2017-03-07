@@ -1,4 +1,4 @@
-+var Fusion_Cache = {
+var Cache = {
 
 	load: function()
 	{
@@ -81,8 +81,8 @@
 
 	clear: function(type)
 	{
-		Fusion_Cache.calculateTotal();
-		Fusion_Cache.progressBars(type);
+		Cache.calculateTotal();
+		Cache.progressBars(type);
 
 		$.get(Config.URL + "admin/cachemanager/delete/" + type, function(data)
 		{
@@ -132,7 +132,7 @@
 				break;
 			}
 
-			setTimeout(Fusion_Cache.calculateTotal, 300);
+			setTimeout(Cache.calculateTotal, 300);
 		});
 	},
 
@@ -142,7 +142,7 @@
 
 		var item = {
 			files: parseInt(itemHTML[0]),
-			size: Fusion_Cache.toBytes(itemHTML[1])
+			size: Cache.toBytes(itemHTML[1])
 		};
 
 		var websiteHTML = $("#row_website").html().replace(")", "").split(" files (");
@@ -156,11 +156,11 @@
 
 		var message = {
 			files: parseInt(messageHTML[0]),
-			size: Fusion_Cache.toBytes(messageHTML[1])
+			size: Cache.toBytes(messageHTML[1])
 		};
 
 		var totalFiles = message.files + website.files + item.files,
-			totalSize = Fusion_Cache.formatSize(parseInt(website.size + item.size + message.size));
+			totalSize = Cache.formatSize(parseInt(website.size + item.size + message.size));
 
 		$("#row_total").html("<b>" + totalFiles + " files (" + totalSize + ")</b>")
 

@@ -5,6 +5,8 @@ var Vote = {
 	 */
 	open: function(id, time)
 	{
+		// Change the "vote now" button
+		$("#vote_field_" + id).html(time + " " + lang("hours_remaining", "vote"));
 
 		// Firefox and IE workaround
 		if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1 || isIE)
@@ -14,15 +16,6 @@ var Vote = {
 				window.open(response);
 			});
 		}
-		else
-		{
-			$("#vote_field_" + id + ' form').submit();
-		}
-		
-		// Change the "vote now" button
-		$("#vote_field_" + id).html(time + " " + lang("hours_remaining", "vote"));
-		
-		return false;
 	}
 }
 

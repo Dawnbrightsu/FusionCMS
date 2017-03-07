@@ -65,25 +65,9 @@ $config['donate_paygol'] = array(
 
 );
 
-/*
-|--------------------------------------------------------------------------
-| Paymentwall Donation (www.paymentwall.com)
-|--------------------------------------------------------------------------
-*/
 
-$config['donate_paymentwall'] = array(
-	'use'               => true,
-	'key'               => 'YOUR KEY',
-	'secret_key'        => 'YOUR SECRET KEY',
-	'widget_code'       => 'YOUR WIDGET CODE (p1_*)',
 
-	// Test mode (used for Paymentwall approval)
-	// When enabled, only the user with the given ID will be able to use the
-	// Paymentwall donation, even if Paymentwall is disabled.
-	// You can create a test user dedicated for the approval.
-	'test_mode' => true,
-	'test_user' => 1,
-);
+
 
 /*******************************************************************/
 /******************* Only Jesper allowed ***************************/

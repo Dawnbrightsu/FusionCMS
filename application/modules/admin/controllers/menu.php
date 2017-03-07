@@ -52,13 +52,12 @@ class Menu extends MX_Controller
 			}
 		}
 
-        if ($pages = $this->menu_model->getPages())
-        {
-    		foreach($pages as $k => $v)
-    		{
-    			$pages[$k]['name'] = langColumn($v['name']);
-    		}
-        }
+		$pages = $this->menu_model->getPages();
+
+		foreach($pages as $k => $v)
+		{
+			$pages[$k]['name'] = langColumn($v['name']);
+		}
 
 		// Prepare my data
 		$data = array(

@@ -10,7 +10,7 @@
  | |  | |_| \__ \ | (_) | | | | |____| |  | |____) |
  |_|   \__,_|___/_|\___/|_| |_|\_____|_|  |_|_____/ 
 
- www.fusion-hub.com
+ fusion.raxezdev.com
 
 -->
 
@@ -36,8 +36,6 @@
 		<!-- Load scripts -->
 		<script src="{if $cdn}//html5shiv.googlecode.com/svn/trunk/html5.js{else}{$path}js/html5shiv.js{/if}"></script>
 		<script type="text/javascript" src="{if $cdn}https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js{else}{$path}js/jquery.min.js{/if}"></script>
-		<script type="text/javascript">var isIE = false;</script>
-		<!--[if IE]><script type="text/javascript">isIE = true;</script><![endif]-->
 		<script type="text/javascript" src="{$path}js/router.js"></script>
 		<script type="text/javascript" src="{$path}js/require.js"></script>
 		<script type="text/javascript">

@@ -33,7 +33,7 @@ var Language = (function()
 	self.set = function(data)
 	{
 		data = data.replace(/\//, "");
-		items = {};
+
 		items = JSON.parse(data);
 	}
 
@@ -52,7 +52,7 @@ var Language = (function()
 		}
 
 		// Make sure it exists
-		if(typeof items[file] != "undefined" && typeof items[file][id] != "undefined")
+		if(typeof items[file][id] != "undefined")
 		{
 			return items[file][id];
 		}

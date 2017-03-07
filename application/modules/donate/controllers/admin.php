@@ -16,18 +16,16 @@ class Admin extends MX_Controller
 
 	public function index()
 	{
+		// Change the title
 		$this->administrator->setTitle("Donation log");
 		
-		// get the config items
-		$paypal_cfg = $this->config->item('donate_paypal');
-		$paygol_cfg = $this->config->item('donate_paygol');
-		$paymentwall_cfg = $this->config->item('donate_paymentwall');
+		//get the config items.
+		$paypal_enabled = $this->config->item('donate_paypal');
+		$paygol_enabled = $this->config->item('donate_paygol');
 		
 		$paypal = $this->donate_model->getDonationLog('paypal');
 		$paygol = $this->donate_model->getDonationLog('paygol');
-		$paymentwall = $this->donate_model->getDonationLog('paymentwall');
 
-		// add actual usernames to datasets
 		if($paypal)
 		{
 			foreach($paypal as $k => $v)
@@ -44,24 +42,14 @@ class Admin extends MX_Controller
 			}
 		}
 
-		if($paymentwall)
-		{
-			foreach ($paymentwall as $k => $v)
-			{
-				$paymentwall[$k]["nickname"] = $this->user->getUsername($v['user_id']);
-			}
-		}
-
 		$monthlyIncome = $this->donate_model->getMonthlyIncome();
 
 		// Prepare my data
 		$data = array(
-			'paypal_enabled' => $paypal_cfg['use'],
-			'paygol_enabled' => $paygol_cfg['use'],
-			'paymentwall_enabled' => $paymentwall_cfg['use'],
+			'paypal_enabled' => $paypal_enabled['use'],
+			'paygol_enabled' => $paygol_enabled['use'],
 			'paypal_logs' => $paypal,
 			'paygol_logs' => $paygol,
-			'paymentwall_logs' => $paymentwall,
 			'url' => $this->template->page_url,
 			'currency' => $this->config->item('donation_currency'),
 			'monthly_income_stack' => $this->arrayFormat($monthlyIncome),
@@ -158,9 +146,9 @@ class Admin extends MX_Controller
 	{
 		$string = $this->input->post('string');
 		
-		if(!$string || !$type || !in_array($type, array('paypal', 'paygol', 'paymentwall')))
+		if(!$string || !$type || !in_array($type, array('paypal', 'paygol')))
 		{
-			die('invalid type or search input');
+			die();
 		}
 		else
 		{
@@ -192,6 +180,11 @@ class Admin extends MX_Controller
 				{
 					$results = $this->donate_model->getDonationLog($type);
 				}
+
+				if(!$results)
+				{
+					die("<span>No matches</span>");
+				}
 			}
 			elseif($type == "paygol")
 			{
@@ -221,45 +214,20 @@ class Admin extends MX_Controller
 				{
 					$results = $this->donate_model->getDonationLog($type);
 				}
-			}
-			elseif ($type == "paymentwall")
-			{
-				// search by signature
-				if(preg_match("/^[A-Fa-f0-9]{32}$/", $string))
-				{
-					$results = $this->donate_model->findBySignature($type, $string);
-				}
-				// search by username
-				elseif(preg_match("/^[a-zA-Z0-9]*$/", $string) && strlen($string) > 3 && strlen($string) < 15)
-				{
-					$user_id = $this->user->getId($string);
-					
-					if(!$user_id)
-					{
-						die("<span>Unknown account</span>");
-					}
 
-					$results = $this->donate_model->findById($type, $user_id);
-				}
-				else
+				if(!$results)
 				{
-					$results = $this->donate_model->getDonationLog($type);
+					die("<span>No matches</span>");
 				}
 			}
 
-			if(!$results)
-			{
-				die("<span>No matches</span>");
-			}
-
-			// add usernames to dataset
 			foreach($results as $k => $v)
 			{
-				if($type == "paypal" or $type == 'paymentwall')
+				if($type == "paypal")
 				{
 					$results[$k]["nickname"] = $this->user->getUsername($v['user_id']);
 				}
-				elseif($type == 'paygol')
+				else
 				{
 					$results[$k]["nickname"] = $this->user->getUsername($v['custom']);
 				}

@@ -1,18 +1,18 @@
 <?php
 
-$config['use_forum_bridge'] = true;
+$config['use_forum_bridge'] = false;
 
 /**
  * Default support:
  * phpbb, ipb, smf, mybb
  */
-$config['forum_bridge'] = "Wbb";
-$config['forum_table_prefix'] = "";
+$config['forum_bridge'] = "phpbb, ipb, smf or mybb";
+$config['forum_table_prefix'] = "phpbb_";
 
 $config['bridge']['hostname'] = "127.0.0.1";
-$config['bridge']['username'] = "trinity";
-$config['bridge']['password'] = "trinity";
-$config['bridge']['database'] = "wcf";
+$config['bridge']['username'] = "root";
+$config['bridge']['password'] = "";
+$config['bridge']['database'] = "phpbb";
 $config['bridge']['dbdriver'] = "mysqli";
 $config['bridge']['dbprefix'] = "";
 $config['bridge']['pconnect'] = TRUE;

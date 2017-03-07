@@ -38,7 +38,6 @@ body {
 	background-position:bottom center, top center;
 	background-color:#010a0f;
 	text-shadow:1px 1px 0px #000;
-	line-height:0;
 }
 
 *, ul, li, h1, h2, p, b {
@@ -111,7 +110,6 @@ a img {
 	margin-bottom:119px;
 	margin-left:auto;
 	margin-right:auto;
-	line-height: 18px;
 	background-image:url(../images/body_bg.png);
 }
 
@@ -355,7 +353,6 @@ footer #logo:hover {
 	font-family:MuseoSans;
 	margin-top:10px;
 	background-position:middle;
-	cursor:pointer;
 }
 
 .nice_button:hover, .nice_active, input[type="submit"]:hover {

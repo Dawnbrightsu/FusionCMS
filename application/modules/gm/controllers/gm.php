@@ -82,8 +82,7 @@ class Gm extends MX_Controller
 		if($ticket)
 		{
 			//Set parameters
-			$itemId = array(array('id' => $this->input->post('item')));
-			
+			$itemId = array($this->input->post('item'));
 			$title = $this->config->item('gm_senditemtitle');
 			$body = $this->config->item('gm_senditembody');
 			if(strlen($body) >= 8000)

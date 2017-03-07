@@ -339,7 +339,6 @@ input[type="submit"] {
 	height:50px;
 	margin-left:7px;
 	font-size:20px;
-	cursor:pointer;
 }
 
 input[disabled], input[disabled] + img {

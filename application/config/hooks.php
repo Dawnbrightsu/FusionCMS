@@ -10,12 +10,7 @@
 |
 */
 
-$hook['pre_system'][] = array(
-    'class'    => '',
-    'function' => 'fix_cf_ip',
-    'filename' => 'cloudflare.php',
-    'filepath' => 'hooks/cloudflare'
-);
+
 
 /* End of file hooks.php */
 /* Location: ./application/config/hooks.php */

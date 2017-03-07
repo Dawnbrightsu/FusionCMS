@@ -1,6 +1,6 @@
 {foreach from=$articles item=article}
 	<article>
-		<a href="{$url}news/view/{$article.id}" class="top">{$article.headline}</a>
+		<a href="{$url}news/view/{$article.id}" class="top">{langColumn($article.headline)}</a>
 		<section class="body">
 			{if $article.avatar}
 				<div class="avatar">
@@ -8,7 +8,7 @@
 				</div>
 			{/if}
 			
-			{$article.content}
+			{langColumn($article.content)}
 			
 			<div class="clear"></div>
 			

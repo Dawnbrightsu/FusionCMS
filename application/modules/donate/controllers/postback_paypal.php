@@ -73,10 +73,7 @@ class Postback_paypal extends MX_Controller
 			$loc = 'ssl://www.paypal.com';
 			$host = 'www.paypal.com';
 		}
-		$req .= @implode("&", $values);
-
-		// add paypal cmd variable
-	
+		
 		// Define our request headers
 		$header = "POST /cgi-bin/webscr HTTP/1.0\r\n";
 		$header .= "Host: www.paypal.com\r\n";
@@ -106,7 +103,7 @@ class Postback_paypal extends MX_Controller
 		 * other: The payment is pending for a reason other than those listed above. For more information, contact PayPal Customer Service.
 		 */
 		$this->pending_reason = $this->input->post('pending_reason');
-
+		 
 		//Standard we didn't validated it.
 		$validated = 0;
 		$error_count = 0;
@@ -128,6 +125,7 @@ class Postback_paypal extends MX_Controller
 			{
 				$res .= fgets($fp, 1024);
 			}
+
 
 			if($this->debug)
 			{
@@ -199,7 +197,7 @@ class Postback_paypal extends MX_Controller
 
 			//Close the connection
 			fclose($fp);
-
+			
 			//insert the logs
 			// Gather our database log datas, insert here already because of validation.
 			$data = array(
@@ -217,6 +215,7 @@ class Postback_paypal extends MX_Controller
 			);
 
 			$this->db->insert("paypal_logs", $data);
+
 			$this->plugins->onDonationPostback($data['user_id'], $data['payment_amount'], $this->getDpAmount());
 
 			die();
