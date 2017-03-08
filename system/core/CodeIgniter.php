@@ -25,6 +25,7 @@
  * @filesource
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
+
 /**
  * System Initialization File
  *
@@ -36,6 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @author		EllisLab Dev Team
  * @link		http://codeigniter.com/user_guide/
  */
+
 /**
  * CodeIgniter Version
  *
@@ -43,12 +45,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 	define('CI_VERSION', '3.0-dev');
+
 /*
  * ------------------------------------------------------
  *  Load the global functions
  * ------------------------------------------------------
  */
 	require_once(BASEPATH.'core/Common.php');
+
 /*
  * ------------------------------------------------------
  *  Load the framework constants
@@ -62,16 +66,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	{
 		require(APPPATH.'config/constants.php');
 	}
+
 /*
  * ------------------------------------------------------
  *  Define a custom error handler so we can log PHP errors
  * ------------------------------------------------------
  */
 	set_error_handler('_exception_handler');
+
 	if ( ! is_php('5.4'))
 	{
 		@ini_set('magic_quotes_runtime', 0); // Kill magic quotes
 	}
+
 /*
  * ------------------------------------------------------
  *  Set the subclass_prefix
@@ -92,6 +99,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	{
 		get_config(array('subclass_prefix' => $assign_to_config['subclass_prefix']));
 	}
+
 /*
  * ------------------------------------------------------
  *  Start the timer... tick tock tick tock...
@@ -100,24 +108,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$BM =& load_class('Benchmark', 'core');
 	$BM->mark('total_execution_time_start');
 	$BM->mark('loading_time:_base_classes_start');
+
 /*
  * ------------------------------------------------------
  *  Instantiate the hooks class
  * ------------------------------------------------------
  */
 	$EXT =& load_class('Hooks', 'core');
+
 /*
  * ------------------------------------------------------
  *  Is there a "pre_system" hook?
  * ------------------------------------------------------
  */
 	$EXT->_call_hook('pre_system');
+
 /*
  * ------------------------------------------------------
  *  Instantiate the config class
  * ------------------------------------------------------
  */
 	$CFG =& load_class('Config', 'core');
+
 	// Do we have any manually set config items in the index.php file?
 	if (isset($assign_to_config) && is_array($assign_to_config))
 	{
@@ -126,6 +138,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$CFG->set_item($key, $value);
 		}
 	}
+
 /*
  * ------------------------------------------------------
  *  Instantiate the UTF-8 class
@@ -138,12 +151,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *
  */
 	$UNI =& load_class('Utf8', 'core');
+
 /*
  * ------------------------------------------------------
  *  Instantiate the URI class
  * ------------------------------------------------------
  */
 	$URI =& load_class('URI', 'core');
+
 /*
  * ------------------------------------------------------
  *  Instantiate the routing class and set the routing
@@ -151,17 +166,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 	$RTR =& load_class('Router', 'core');
 	$RTR->_set_routing();
+
 	// Set any routing overrides that may exist in the main index file
 	if (isset($routing))
 	{
 		$RTR->_set_overrides($routing);
 	}
+
 /*
  * ------------------------------------------------------
  *  Instantiate the output class
  * ------------------------------------------------------
  */
 	$OUT =& load_class('Output', 'core');
+
 /*
  * ------------------------------------------------------
  *	Is there a valid cache file? If so, we're done...
@@ -172,24 +190,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	{
 		exit;
 	}
+
 /*
  * -----------------------------------------------------
  * Load the security class for xss and csrf support
  * -----------------------------------------------------
  */
 	$SEC =& load_class('Security', 'core');
+
 /*
  * ------------------------------------------------------
  *  Load the Input class and sanitize globals
  * ------------------------------------------------------
  */
 	$IN	=& load_class('Input', 'core');
+
 /*
  * ------------------------------------------------------
  *  Load the Language class
  * ------------------------------------------------------
  */
 	$LANG =& load_class('Lang', 'core');
+
 /*
  * ------------------------------------------------------
  *  Load the app controller and local controller
@@ -198,6 +220,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 	// Load the base controller class
 	require BASEPATH.'core/Controller.php';
+
 	/**
 	 * Reference to the CI_Controller method.
 	 *
@@ -209,10 +232,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	{
 		return CI_Controller::get_instance();
 	}
+
 	if (file_exists(APPPATH.'core/'.$CFG->config['subclass_prefix'].'Controller.php'))
 	{
 		require APPPATH.'core/'.$CFG->config['subclass_prefix'].'Controller.php';
 	}
+
 	// Load the local application controller
 	// Note: The Router class automatically validates the controller path using the router->_validate_request().
 	// If this include fails it means that the default controller in the Routes.php file is not resolving to something valid.
@@ -220,9 +245,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	{
 		show_error('Unable to load your default controller. Please make sure the controller specified in your Routes.php file is valid.');
 	}
+
 	include(APPPATH.'controllers/'.$RTR->directory.$RTR->class.'.php');
+
 	// Set a mark point for benchmarking
 	$BM->mark('loading_time:_base_classes_end');
+
 /*
  * ------------------------------------------------------
  *  Security check
@@ -234,6 +262,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 	$class	= $RTR->class;
 	$method	= $RTR->method;
+
 	if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
 	{
 		if ( ! empty($RTR->routes['404_override']))
@@ -242,12 +271,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			{
 				$method = 'index';
 			}
+
 			if ( ! class_exists($class, FALSE))
 			{
 				if ( ! file_exists(APPPATH.'controllers/'.$class.'.php'))
 				{
 					show_404($class.'/'.$method);
 				}
+
 				include_once(APPPATH.'controllers/'.$class.'.php');
 			}
 		}
@@ -256,6 +287,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			show_404($class.'/'.$method);
 		}
 	}
+
 	if (method_exists($class, '_remap'))
 	{
 		$params = array($method, array_slice($URI->rsegments, 2));
@@ -277,23 +309,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			{
 				$method = 'index';
 			}
+
 			if ( ! class_exists($class, FALSE))
 			{
 				if ( ! file_exists(APPPATH.'controllers/'.$class.'.php'))
 				{
 					show_404($class.'/'.$method);
 				}
+
 				include_once(APPPATH.'controllers/'.$class.'.php');
 			}
 		}
+
 		$params = array_slice($URI->rsegments, 2);
 	}
+
 /*
  * ------------------------------------------------------
  *  Is there a "pre_controller" hook?
  * ------------------------------------------------------
  */
 	$EXT->_call_hook('pre_controller');
+
 /*
  * ------------------------------------------------------
  *  Instantiate the requested controller
@@ -301,27 +338,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 	// Mark a start point so we can benchmark the controller
 	$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_start');
+
 	$CI = new $class();
+
 /*
  * ------------------------------------------------------
  *  Is there a "post_controller_constructor" hook?
  * ------------------------------------------------------
  */
 	$EXT->_call_hook('post_controller_constructor');
+
 /*
  * ------------------------------------------------------
  *  Call the requested method
  * ------------------------------------------------------
  */
 	call_user_func_array(array(&$CI, $method), $params);
+
 	// Mark a benchmark end point
 	$BM->mark('controller_execution_time_( '.$class.' / '.$method.' )_end');
+
 /*
  * ------------------------------------------------------
  *  Is there a "post_controller" hook?
  * ------------------------------------------------------
  */
 	$EXT->_call_hook('post_controller');
+
 /*
  * ------------------------------------------------------
  *  Send the final rendered output to the browser
@@ -331,11 +374,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	{
 		$OUT->_display();
 	}
+
 /*
  * ------------------------------------------------------
  *  Is there a "post_system" hook?
  * ------------------------------------------------------
  */
 	$EXT->_call_hook('post_system');
+
 /* End of file CodeIgniter.php */
 /* Location: ./system/core/CodeIgniter.php */

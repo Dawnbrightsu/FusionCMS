@@ -3,7 +3,6 @@
 class Install
 {
 	private $db;
-	const MYSQL_DEFAULT_PORT = 3306;
 
 	public function __construct()
 	{
@@ -20,10 +19,6 @@ class Install
 				case "realms": $this->realms(); break;
 				case "ranks": $this->ranks(); break;
 				case "folder": $this->check(); break;
-				case "checkPhpExtensions": $this->checkPhpExtensions(); break;
-				case "checkApacheModules": $this->checkApacheModules(); break;
-				case "checkPhpVersion": $this->checkPhpVersion(); break;
-				case "checkDbConnection": $this->checkDbConnection(); break;
 				case "final": $this->finalStep(); break;
 				case "getEmulators": $this->getEmulators(); break;
 			}
@@ -39,9 +34,6 @@ class Install
 
 	private function check()
 	{
-        if ( ! isset($_GET['test']))
-            return;
-        
 		$folder = $_GET['test'];
 
 		$file = fopen("../application/".$folder."/write_test.txt", "w");
@@ -53,62 +45,11 @@ class Install
 
 		die("1");
 	}
-    
-    private function checkPhpExtensions()
-    {
-        $req = array('mysqli', 'curl', 'openssl', 'soap', 'gd', 'mbstring', 'json');
-        $loaded = get_loaded_extensions();
-        $errors = array();
-        
-        foreach ($req as $ext)
-            if ( ! in_array($ext, $loaded))
-                $errors[] = $ext;
-        
-        die( $errors ? join(', ', $errors) : '1' );
-    }
-    
-    private function checkApacheModules()
-    {
-        $req = array('mod_rewrite', 'mod_headers', 'mod_expires', 'mod_deflate');
-        $loaded = function_exists('apache_get_modules') ? apache_get_modules() : array();
-        $errors = array();
-        
-        foreach ($req as $ext)
-            if ( ! in_array($ext, $loaded))
-                $errors[] = $ext;
-        
-        die( $errors ? join(', ', $errors) : '1' );
-    }
-    
-    private function checkPhpVersion()
-    {
-		die( version_compare(PHP_VERSION, '5.3', '>=') ? '1' : '0' );
-    }
-	
-	private function checkDbConnection()
-	{
-		$req = array('hostname', 'username', 'database');
-		
-		foreach ($req as $var) {
-			if ( ! isset($_POST[$var]) || empty($_POST[$var]))
-				die('Please fill all fields.');
-		}
-		
-		@$db = new Mysqli(
-			$_POST['hostname'], 
-			$_POST['username'], 
-			$_POST['password'], 
-			$_POST['database'],
-			isset($_POST['port']) ? $_POST['port'] : self::MYSQL_DEFAULT_PORT 
-		);
-		
-		die($db->connect_error ? $db->connect_error : '1');
-	}
 
 	private function config()
 	{
 		$owner = fopen("../application/config/owner.php", "w");
-		fwrite($owner, '<?php $config["owner"] = "'.addslashes($_POST['superadmin']).'";');
+		fwrite($owner, '<?php $config["owner"] = "'.$_POST['superadmin'].'";');
 		fclose($owner);
 
 		require_once('../application/libraries/configeditor.php');
@@ -185,7 +126,6 @@ $db["cms"]["hostname"] = "'.$_POST['cms_hostname'].'";
 $db["cms"]["username"] = "'.$_POST['cms_username'].'";
 $db["cms"]["password"] = "'.$_POST['cms_password'].'";
 $db["cms"]["database"] = "'.$_POST['cms_database'].'";
-$db["cms"]["port"] 	   = '.(is_numeric($_POST['cms_port']) ? $_POST['cms_port'] : self::MYSQL_DEFAULT_PORT).';
 $db["cms"]["dbdriver"] = "mysqli";
 $db["cms"]["dbprefix"] = "";
 $db["cms"]["pconnect"] = TRUE;
@@ -202,7 +142,6 @@ $db["account"]["hostname"] = "'.$_POST['realmd_hostname'].'";
 $db["account"]["username"] = "'.$_POST['realmd_username'].'";
 $db["account"]["password"] = "'.$_POST['realmd_password'].'";
 $db["account"]["database"] = "'.$_POST['realmd_database'].'";
-$db["account"]["port"]     = '.(is_numeric($_POST['realmd_port']) ? $_POST['realmd_port'] : self::MYSQL_DEFAULT_PORT).';
 $db["account"]["dbdriver"] = "mysqli";
 $db["account"]["dbprefix"] = "";
 $db["account"]["pconnect"] = TRUE;
@@ -226,7 +165,7 @@ $db["account"]["stricton"] = FALSE;';
 	{
 		require('../application/config/database.php');
 
-		$this->db = new mysqli($db['cms']['hostname'], $db['cms']['username'], $db['cms']['password'], $db['cms']['database'], $db['cms']['port']);
+		$this->db = new mysqli($db['cms']['hostname'], $db['cms']['username'], $db['cms']['password'], $db['cms']['database']);
 		if(mysqli_connect_error())
 		{
 			die('Connect Error ('.mysqli_connect_errno().') '.mysqli_connect_error());
@@ -301,27 +240,28 @@ $db["account"]["stricton"] = FALSE;';
 		$this->connect();
 
 		$realms = json_decode(stripslashes($_POST['realms']), true);
-		
-		if(is_array($realms))
+		$emulator = $this->db->real_escape_string($_POST['emulator']);
+
+		if(!is_array($realms))
 		{
-			foreach($realms as $realm)
-			{
-				$this->db->query("INSERT INTO realms(`emulator`, `cap`, `char_database`, `console_password`,	`console_port`,	`console_username`,	`hostname`,	`password`, `realm_port`, `realmName`, `username`, `world_database`, `override_port_world`, `override_port_char`)
-							VALUES('".$this->db->real_escape_string($realm['emulator'])."',
-									'".$this->db->real_escape_string($realm['cap'])."',
-									'".$this->db->real_escape_string($realm['characters'])."',
-									'".$this->db->real_escape_string($realm['console_password'])."',
-									'".$this->db->real_escape_string($realm['console_port'])."',
-									'".$this->db->real_escape_string($realm['console_username'])."',
-									'".$this->db->real_escape_string($realm['hostname'])."',
-									'".$this->db->real_escape_string($realm['password'])."',
-									'".$this->db->real_escape_string($realm['port'])."',
-									'".$this->db->real_escape_string($realm['realmName'])."',
-									'".$this->db->real_escape_string($realm['username'])."',
-									'".$this->db->real_escape_string($realm['world'])."',
-									'".$this->db->real_escape_string($realm['db_port'])."',
-									'".$this->db->real_escape_string($realm['db_port'])."')");
-			}
+			die("Something went wrong, no realms were provided. Realms data: ".$realms);
+		}
+
+		foreach($realms as $realm)
+		{
+			$this->db->query("INSERT INTO realms(`emulator`, `cap`, `char_database`, `console_password`,	`console_port`,	`console_username`,	`hostname`,	`password`, `realm_port`, `realmName`, `username`, `world_database`)
+						VALUES('".$emulator."',
+								'".$this->db->real_escape_string($realm['cap'])."',
+								'".$this->db->real_escape_string($realm['characters'])."',
+								'".$this->db->real_escape_string($realm['console_password'])."',
+								'".$this->db->real_escape_string($realm['console_port'])."',
+								'".$this->db->real_escape_string($realm['console_username'])."',
+								'".$this->db->real_escape_string($realm['hostname'])."',
+								'".$this->db->real_escape_string($realm['password'])."',
+								'".$this->db->real_escape_string($realm['port'])."',
+								'".$this->db->real_escape_string($realm['realmName'])."',
+								'".$this->db->real_escape_string($realm['username'])."',
+								'".$this->db->real_escape_string($realm['world'])."')");
 		}
 
 		die('1');
@@ -342,8 +282,17 @@ $db["account"]["stricton"] = FALSE;';
 			break;
 
 			case "mangos_ra":
+				$this->SplitSQL("SQL/ranks_mangos.sql");
+			break;
+
 			case "mangos_soap":
+				$this->SplitSQL("SQL/ranks_mangos.sql");
+			break;
+
 			case "mangosr2_ra":
+				$this->SplitSQL("SQL/ranks_mangos.sql");
+			break;
+
 			case "mangosr2_soap":
 				$this->SplitSQL("SQL/ranks_mangos.sql");
 			break;

@@ -5,8 +5,6 @@
  * @package FusionCMS
  */
 
-class UpdaterException extends Exception {}
-
 class Update
 {
 	public static $currentVersion;
@@ -14,7 +12,6 @@ class Update
 	public static $updates;
 	public static $db;
 	private static $password;
-	private static $viewData = array();
 
 	/**
 	 * Initialize all necessary components
@@ -36,28 +33,15 @@ class Update
 		{
 			self::getLatestVersion();
 
-			// perform update action?
 			if(isset($_GET['action']) && isset($_GET['version']))
 			{
 				$version = $_GET['version'];
 				$action = $_GET['action'];
 
-				if($action == 'install')
+				if($action == "import" && self::hasSql($version))
 				{
-					try {
-						if (self::hasSql($version))
-							self::insertSqls($version);
-						
-						self::installFiles($version);
-					}
-					catch (UpdaterException $e) {
-						self::$viewData['error_msg'] = $e->getMessage();
-					}
-					
+					self::insertSqls($version);
 					self::main();
-				}
-				elseif($action == 'import') {
-					
 				}
 				elseif(self::toolExists($version, $action))
 				{
@@ -72,7 +56,6 @@ class Update
 			}
 			else
 			{
-				// display available updates
 				self::getAvailableUpdates();
 				self::main();
 			}
@@ -94,50 +77,12 @@ class Update
 	 */
 	private static function insertSqls($version)
 	{
-		$version = str_replace('.', '_', $version);
+		$version = preg_replace("/\./", "_", $version);
 		$sqls = glob("updates/".$version."/sql/*.sql");
 
 		foreach($sqls as $sql)
 		{
 			self::splitSQL($sql);
-		}
-	}
-	
-	/**
-	 * Installs the file changes of an update package
-	 * @param string $version
-	 */
-	private static function installFiles($version)
-	{
-		$path = 'updates/'.str_replace('.', '_', $version).'/';
-
-		// remove deleted files
-		if (file_exists($path.'deleted_files.txt')) 
-		{
-			$files = file($path.'deleted_files.txt');
-			
-			foreach ($files as $file) {
-				@unlink('../'.$file);
-			}
-		}
-		
-		// install zips
-		$zips = self::getZips($path);
-		
-		if ($zips)
-		{
-			foreach ($zips as $file) 
-			{
-				$zip = new ZipArchive();
-			
-				if ($zip->open($file) !== true)
-					throw new UpdaterException('Could not open zip archive: '.$file);
-			
-				if ($zip->extractTo(realpath('../')) !== true)
-					throw new UpdaterException('Zip extraction failed: '.$file);
-			
-				$zip->close();
-			}
 		}
 	}
 
@@ -181,7 +126,7 @@ class Update
 
 						if(!self::$db->query($query))
 						{
-							throw new UpdaterException('Database error: '.self::$db->error);
+							die(self::$db->error);
 						}
 
 						while(ob_get_level() > 0)
@@ -303,12 +248,14 @@ class Update
 	 */
 	private static function main($tool = false)
 	{
+		$data = array();
+
 		if($tool)
 		{
-			self::$viewData['tool'] = $tool;
+			$data['tool'] = $tool;
 		}
 
-		echo self::getView("views/main.php", self::$viewData);
+		echo self::getView("views/main.php", $data);
 	}
 
 	/**
@@ -317,7 +264,7 @@ class Update
 	 * @param String $b
 	 * @return Boolean
 	 */
-	public static function compareVersions($a, $b)
+	public function compareVersions($a, $b)
 	{
 		$maxLength = 4;
 

@@ -1,4 +1,5 @@
 var Ajax = {
+
 	initialize: function()
 	{
 		$.get("system.php?step=getEmulators", function(data)
@@ -17,197 +18,112 @@ var Ajax = {
 	Realms: {
 		data: [],
 
-		saveAll: function()
+		add: function(form)
 		{
-			Ajax.Realms.data = [];
-			$("#realm_field form").each(function() {
-				var values = {};
-			    $( this ).find("input, select").each(function()
+			var values = {};
+
+			$(form).find("input, select").each(function()
+			{
+				if($(this).attr("type") != "submit")
 				{
-					if($(this).attr("type") != "submit")
-					{
-						values[$(this).attr("id")] = $(this).val();
-					}
-				});
-				Ajax.Realms.data.push(values);
-			})
-		},
-
-		addRealm: function(form)
-		{
-			UI.confirm('<input type="text" id="realmname_preserve" placeholder="Enter the realmname" autofocus/>', 'Add', function()
-			{
-				var name = $("#realmname_preserve").val();
-				
-				if ( ! name)
-					return;
-				
-				$("#realm_field").append("<div class=\"realmHeader\"><a onclick='Ajax.Realms.show(this);'><img class='realmExtend' src='images/icons/black16x16/ic_plus.png' /> " + name + "</a> <img class='realmDelete' src='images/icons/black16x16/ic_delete.png' onclick='Ajax.Realms.deleteRealm(this);' /></div><div class='realmForm' style='display: none;'></div>");
-				$("#realm_field .realmForm").html($("#loader").html()).find('#realmName').val(name);
-				UI.Tooltip.refresh();
+					values[$(this).attr("id")] = $(this).val();
+					$(this).val("");
+				}
 			});
-		},
-		
-		deleteRealm: function(img)
-		{
-			UI.confirm('Are you sure?', 'Yes', function() {
-				$(img).parents('.realmHeader, .realmHeader + div.realmForm').fadeOut(200, function() {
-					Ajax.Realms.saveAll();
-				});
-			});
+
+			Ajax.Realms.data.push(values);
+
+			$("#realm_field").append("<li>" + values.realmName + "</li>");
 		},
 
-		show: function(anchor)
+		next: function()
 		{
-			var div = $(anchor).parents('div.realmHeader');
-
-			if (div.attr("data-active") == "true")
+			if(Ajax.Realms.data.length)
 			{
-				div.next('.realmForm').slideUp(200, function() {
-					div.find('img.realmExtend').attr('src', "images/icons/black16x16/ic_plus.png");
-					div.removeAttr("data-active");
+				UI.confirm('<input type="text" id="superadmin" placeholder="Enter username that will receive owner access..." autofocus/>', 'Accept', function()
+				{
+					var name = $("#superadmin").val();
+					UI.Navigation.next();
+					Ajax.Install.initialize(name);
 				});
-				
-				Ajax.Realms.saveAll();
 			}
 			else
 			{
-				div.next('.realmForm').slideDown(200, function() {
-					div.find('img.realmExtend').attr('src', "images/icons/black16x16/ic_minus.png");
-					div.attr("data-active", "true");
-				});
+				UI.alert('Please add at least one realm!');
 			}
 		}
 	},
 
-	checkKey: function(license, onComplete)
+	checkKey: function()
 	{
-		$.post("http://fusion-hub.com/remote/license", {license: license}, function(data)
+		var field = $("#key_ajax");
+		var cache = field.html();
+		var license = $("#license").val();
+
+		field.fadeOut(100, function()
 		{
-			if (onComplete !== undefined)
-            	onComplete(data == '1');
+			field.html('<img src="images/ajax.gif" />').fadeIn(100, function()
+			{
+				$.post("http://fusion.raxezdev.com/remote/license", {license:license}, function(data)
+				{
+					if(data == '1')
+					{
+						Ajax.checkPermissions();
+						UI.Navigation.next();
+					}
+					else
+					{
+						UI.alert('Invalid license key');
+						field.html(cache);
+					}
+				});
+			});
 		});
-	},
-	
-	checkPhpVersion: function(onComplete)
-	{
-		$.get("system.php?step=checkPhpVersion", function(data)
-		{
-			if (data == '1')
-				$('.php-version .check-result').css('color', 'green').html('OK!');
-			else
-				$('.php-version .check-result').addClass('error').css('color','red').html('Not installed.');
-            
-			if (onComplete !== undefined)
-				onComplete(data == '1');
-		});
-	},
-	
-	checkDbConnection: function(data, onComplete)
-	{
-		$.post("system.php?step=checkDbConnection", data, function(data) {
-			if (onComplete !== undefined)
-				onComplete(data);
-		})
 	},
 
-	checkPermissions: function(onComplete)
+	checkPermissions: function()
 	{
-        var done = 0;
-        
-        if (onComplete !== undefined) 
-        {
-            var id = setInterval(function() {
-                if (done == 3) {
-                    clearInterval(id);
-                    onComplete();
-                }
-            }, 100);
-        }
-        
 		$.get("system.php?step=folder&test=config", function(data)
 		{
 			if(data == '1')
 			{
-				$("#config_folder").css({color:"green"}).removeClass('error').html("/application/config/ is writable");
+				$("#config_folder").css({color:"green"}).html("/application/config/ is writable");
 			}
 			else
 			{
-				$("#config_folder").css({color:"red"}).addClass('error').html('/application/config/ needs to be writable (see <a href="http://en.wikipedia.org/wiki/Chmod" target="_blank">chmod</a>)');
+				$("#config_folder").css({color:"red"}).html('/application/config/ needs to be writable (see <a href="http://en.wikipedia.org/wiki/Chmod" target="_blank">chmod</a>)');
 			}
-            
-            done++;
 		});
 
 		$.get("system.php?step=folder&test=cache", function(data)
 		{
 			if(data == '1')
 			{
-				$("#cache_folder").css({color:"green"}).removeClass('error').html("/application/cache/ is writable");
+				$("#cache_folder").css({color:"green"}).html("/application/cache/ is writable");
 			}
 			else
 			{
-				$("#cache_folder").css({color:"red"}).addClass('error').html('/application/cache/ needs to be writable (see <a href="http://en.wikipedia.org/wiki/Chmod" target="_blank">chmod</a>)');
+				$("#cache_folder").css({color:"red"}).html('/application/cache/ needs to be writable (see <a href="http://en.wikipedia.org/wiki/Chmod" target="_blank">chmod</a>)');
 			}
-            
-            done++;
 		});
 
 		$.get("system.php?step=folder&test=modules", function(data)
 		{
 			if(data == '1')
 			{
-				$("#modules_folder").css({color:"green"}).removeClass('error').html("/application/modules/ is writable");
+				$("#modules_folder").css({color:"green"}).html("/application/modules/ is writable");
 			}
 			else
 			{
-				$("#modules_folder").css({color:"red"}).addClass('error').html('/application/modules/ needs to be writable (see <a href="http://en.wikipedia.org/wiki/Chmod" target="_blank">chmod</a>)');
+				$("#modules_folder").css({color:"red"}).html('/application/modules/ needs to be writable (see <a href="http://en.wikipedia.org/wiki/Chmod" target="_blank">chmod</a>)');
 			}
-            
-            done++;
 		});
 	},
-    
-    checkPhpExtensions: function(onComplete) {
-        $.get("system.php?step=checkPhpExtensions", function(data) {
-            
-            if (data != '1') {
-                $("#php-extensions-missing .extensions").text(data).parent().show();
-				$('.php-extensions .check-result').hide();
-            }
-            else {
-                $('#php-extensions-missing').hide();
-				$('.php-extensions .check-result').css('color', 'green').html('OK!').show();
-            }
-			
-            if (onComplete !== undefined)
-                onComplete(data);
-        });
-    },
-    
-    checkApacheModules: function(onComplete) {
-        $.get("system.php?step=checkApacheModules", function(data) {
-            
-            if (data != '1') {
-                $("#apache-modules-missing .modules").text(data).parent().show();
-				$('.apache-modules .check-result').hide();
-            }
-            else {
-                $('#apache-modules-missing').hide();
-				$('.apache-modules .check-result').css('color', 'green').html('OK!').show();
-            }
-            
-            if (onComplete !== undefined)
-                onComplete(data);
-        });
-    },
 
 	Install: {
 
 		initialize: function(name)
 		{
-			$('#install').text('');
-
 			Ajax.Install.configs(name, function()
 			{
 				Ajax.Install.database(function()
@@ -228,7 +144,6 @@ var Ajax = {
 
 									setTimeout(function()
 									{
-										Memory.clear();
 										window.location = "../";
 									}, 500);
 								}
@@ -262,12 +177,10 @@ var Ajax = {
 				cms_username: $("#cms_username").val(),
 				cms_password: $("#cms_password").val(),
 				cms_database: $("#cms_database").val(),
-				cms_port: $("#cms_port").val(),
 				realmd_hostname: $("#realmd_hostname").val(),
 				realmd_username: $("#realmd_username").val(),
 				realmd_password: $("#realmd_password").val(),
 				realmd_database: $("#realmd_database").val(),
-				realmd_port: $("#realmd_port").val(),
 				security_code: $("#security_code").val(),
 				emulator: $("#emulator").val(),
 				superadmin: name

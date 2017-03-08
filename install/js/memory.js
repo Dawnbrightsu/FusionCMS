@@ -29,7 +29,6 @@ var Memory = (function()
 			"title",
 			"server_name",
 			"realmlist",
-			"security_code",
 			"expansion",
 			"keywords",
 			"description",
@@ -41,13 +40,9 @@ var Memory = (function()
 			"cms_hostname",
 			"cms_username",
 			"cms_database",
-			"cms_password",
-			"cms_port",
 			"realmd_hostname",
 			"realmd_username",
-			"realmd_database",
-			"realmd_password",
-			"realmd_port"
+			"realmd_database"
 		]
 	};
 
@@ -92,19 +87,10 @@ var Memory = (function()
 			});
 		}
 	};
-	
-	/**
-	 * Clears the memory
-	 */
-	var clear = function()
-	{
-		localStorage.clear();
-	};
 
-	// expose public methods
+	// Publicly expose the save() method
 	return {
 		save: save,
-		populate: populate,
-		clear: clear
+		populate: populate
 	};
 }());

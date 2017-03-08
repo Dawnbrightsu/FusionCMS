@@ -1,197 +1,12 @@
 var UI = {
 
 	/**
-	 * Initialize the installation UI
+	 * Initialize the admin panel
 	 */
 	initialize: function()
 	{
 		this.Tooltip.initialize();
-        
-        // how-to box
-        $('.how_to_box .title').click(function() {
-            $(this).parent().children('.content').slideToggle();
-        });
-        
-        // bind previous buttons
-        $('.installer_navigation .prev').click(function() { 
-            UI.Navigation.previous(); 
-        });
-        
-        // bind next buttons, without validation
-        $('.installer_navigation .next').click(function() { 
-            UI.Navigation.next(); 
-        });
-
-        // navigation
-        $('nav .sub a').click(function() {
-            UI.Navigation.goTo( $(this).attr('id') );
-        });
 	},
-    
-    /**
-     * Displays a loading animation in the next / previous 
-     * navigation area
-     * @param onComplete
-     */
-    displayLoading: function(onComplete)
-    {
-        $('.installer_navigation:visible').fadeOut(100, function() {
-            $(this).find('a').hide();
-            
-			$(this).append('<img src="images/ajax.gif" />').fadeIn(100, function()
-            {
-                if (onComplete !== undefined)
-                    onComplete();
-            });
-        });
-    },
-
-    
-    /**
-     * Remove the loading animation in the next / previous 
-     * navigation area
-     * @param onComplete
-     */
-    completeLoading: function() 
-    {
-        $('.installer_navigation').find('img').remove();
-        $('.installer_navigation a:not(:visible)').show();
-    },
-    
-    Validation: 
-	{
-        license: function(notifyResult) {
-    		var license = $("#license").val();
-            
-            Ajax.checkKey(license, function(valid) {
-                if (valid) {
-                    // prepare data for next step
-				    Ajax.checkPermissions();
-                    Ajax.checkPhpExtensions();
-                    Ajax.checkApacheModules();
-                    Ajax.checkPhpVersion();
-                    
-					notifyResult(true);
-                }
-                else {
-					notifyResult(false, 'This license key is invalid.');
-                }
-            });
-        },
-        
-        requirements: function(notifyResult) 
-		{
-            // check folder permissions
-            Ajax.checkPermissions(function() {
-                if ($('.folder-permissions .error').length) {
-					notifyResult(false, 'Please fix all folder permissions to continue.');
-                }
-                else {
-                    // check php extensions
-                    Ajax.checkPhpExtensions(function(result) {
-                        
-                        if (result == '1') 
-						{
-							// check php version
-							Ajax.checkPhpVersion(function(result) {
-								
-								if (result == '1') {
-									notifyResult(true);
-								}
-								else {
-	                                notifyResult(false, 'FusionCMS requires at least PHP 5.3.');
-								}
-							});
-                        }
-                        else {
-                            notifyResult(false, 'Please enable all required PHP extensions to continue.');
-                        }
-                    });
-                }
-            });
-        },
-		
-		database: function(notifyResult) 
-		{
-			// check cms db connection
-			var dbCMS = {
-				hostname: $('#cms_hostname').val(),
-				username: $('#cms_username').val(),
-				password: $('#cms_password').val(),
-				database: $('#cms_database').val()
-			};
-			
-			if ($('#cms_port').val())
-				dbCMS['port'] = $('#cms_port').val();
-			
-			var dbLogon = {
-				hostname: $('#realmd_hostname').val(),
-				username: $('#realmd_username').val(),
-				password: $('#realmd_password').val(),
-				database: $('#realmd_database').val()
-			};
-	
-			if ($('#realmd_port').val())
-				dbLogon['port'] = $('#realmd_port').val();
-			
-			// check if all required fields filled
-			var required = ['hostname', 'username', 'password', 'database'];
-			var all_filled = true;
-			
-			for (var key in required) {
-				key = required[key];
-				
-				if ( (dbCMS[key] === undefined || ! dbCMS[key].length) || 
-				     (dbLogon[key] === undefined || ! dbLogon[key].length)) 
-				{
-					all_filled = false;
-					break;
-				}
-			}
-			
-			if ( ! all_filled) {
-				notifyResult(false, 'Please fill all fields.');
-				return;
-			}
-			
-			// all filled, check connections
-			Ajax.checkDbConnection(dbCMS, function(result) {
-				
-				if (result != '1') {
-					notifyResult(false, 'CMS database connection failed:<br />' + result);
-				}
-				else {
-					Ajax.checkDbConnection(dbLogon, function(result) {
-						
-						if (result != '1') {
-							notifyResult(false, 'Logon database connection failed:<br />' + result);
-						}
-						else {
-							notifyResult(true);
-						}
-					});
-				}
-			})
-		},
-
-        realms: function(notifyResult) {			
-			UI.confirm('<input type="text" id="superadmin" placeholder="Enter username that will receive owner access..." autofocus/>', 'Accept', function()
-			{
-				var name = $("#superadmin").val();
-				if (name.length) {
-					notifyResult(true);
-					Ajax.Realms.saveAll();
-					Ajax.Install.initialize(name);
-				}
-				else {
-					notifyResult(false, 'Invalid username.');
-				}
-			},
-			function() {
-				notifyResult(false);
-			});
-        }
-    },
 
 	/**
 	 * Shows an alert box
@@ -199,6 +14,7 @@ var UI = {
 	 */
 	alert: function(question, time)
 	{
+	
 		// Put question and button text
 		$("#alert_message").html(question);
 
@@ -251,7 +67,7 @@ var UI = {
 	 * @param String button
 	 * @param Function callback
 	 */
-	confirm: function(question, button, callback, callback_false)
+	confirm: function(question, button, callback)
 	{
 		$(".popup_links").show();
 		
@@ -269,9 +85,6 @@ var UI = {
 			callback();
 			UI.hidePopup();	
 		});
-		
-		if (callback_false !== undefined)
-			$('#confirm_hide').bind('click', callback_false);
 
 		// Assign hide-function to background
 		$("#popup_bg").bind('click', function()
@@ -309,92 +122,46 @@ var UI = {
 	},
 
 	Navigation: {
-		current: 1,
 
-		next: function(onComplete)
+		current: 1,
+		max: 7,
+
+		next: function()
 		{
-			if (this.current < ($('.step').length + 1))
-				UI.Navigation.goTo(UI.Navigation.current + 1);
+			// Save the current step's fields
+			Memory.save(this.current);
+
+			if(this.current < this.max)
+			{
+				$(".sub .active").removeClass("active");
+
+				$("#installer_step_" + this.current).fadeOut(200, function()
+				{
+					UI.Navigation.current++;
+
+					$(".sub a:nth-child(" + UI.Navigation.current + ")").addClass("active");
+					$("#installer_step_" + UI.Navigation.current).fadeIn(200);
+				});
+			}
 		},
 
-		previous: function(onComplete)
+		previous: function()
 		{
 			if(this.current > 1)
-				UI.Navigation.goTo(UI.Navigation.current - 1);
-		},
-
-		goTo: function(id, onComplete)
-		{
-			id = parseInt(id);
-			
-			if (UI.Navigation.current == id)
-				return;
-			
-			// check if step is accessible yet (is next step, is first step or was completed before)
-			if ( ! (UI.Navigation.current == 1 && id == 2) && id != (UI.Navigation.current+1)  && ! $('.sub a:nth-child(' + id + ')').hasClass('unlocked')) {
-				console.log('goto failed: '+id);
-				return;
-			}
-			
-			console.log('current=' + UI.Navigation.current, 'loading next='+id);
-			
-			var showRequestedStep = function()
 			{
-	            // Save the current step's fields
-				Memory.save(UI.Navigation.current);
-				
-				// display tick in navigation for current step
-				$('.sub a:nth-child(' + UI.Navigation.current + ')').addClass('unlocked');				
 				$(".sub .active").removeClass("active");
-				
-				// fade current step out, requested step in
-				$(".step:eq(" + (UI.Navigation.current - 1) + ")").fadeOut(200, function()
-				{
-					UI.Navigation.current = id;
-			
-					$(".sub a:nth-child(" + UI.Navigation.current + ")").addClass("active");
-					$(".step:eq(" + (UI.Navigation.current - 1) + ")").fadeIn(200, function() {
-						$('document').scrollTop();
-						
-					   if (onComplete !== undefined)
-                           onComplete();
-					});
-				});
-			}
-			
-			// validate current step (only if moving forward)
-			var validation = $('.step:eq(' + (UI.Navigation.current - 1) + ')').attr('data-validation');
-			
-			if (id > UI.Navigation.current && validation && UI.Validation[validation] !== undefined) 
-			{
-				// display loading animation, run validation, remove loading
-				UI.displayLoading(function() {
-					var result = UI.Validation[validation](function(result, errorMsg) 
-					{
-						UI.completeLoading();
-						
-						if ( ! result) {
-							$('.sub a:nth-child(' + id + ')').removeClass('unlocked');
-							
-							if (errorMsg !== undefined)
-								UI.alert(errorMsg);
 
- 						   if (onComplete !== undefined)
- 	                           onComplete();
-						}
-						else {
-							// validation OK, show requested step page
-							showRequestedStep();
-						}
-					});
+				$("#installer_step_" + this.current).fadeOut(200, function()
+				{
+					UI.Navigation.current--;
+
+					$(".sub a:nth-child(" + UI.Navigation.current + ")").addClass("active");
+					$("#installer_step_" + UI.Navigation.current).fadeIn(200);
 				});
-			}
-			else {
-				showRequestedStep();
 			}
 		}
 	},
-	
+
 	Tooltip: {
 
 		/**

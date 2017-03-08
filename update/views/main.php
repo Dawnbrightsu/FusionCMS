@@ -35,29 +35,20 @@
 			</div>
 			
 			<section id="main">
-				<?php if(isset($tool)) : ?>
+				<?php if(isset($tool)) { ?>
 					<?php echo $tool->run(); ?>
-					
-				<?php elseif(isset($_GET['version']) && isset($_GET['action']) && $_GET['action'] == "install") : ?>
-					
-					<?php if ( ! isset($error_msg) or empty($error_msg)) : ?>
-						All changes have been successfully imported. <br /><br />
-						<a href="../">Visit your site now</a>
-					<?php else : ?>
-						<b>An error occurred during installation:</b><br />
-						<?php echo $error_msg; ?>
-					<?php endif; ?>
-					
-				<?php else : ?>
-					<?php if ( ! Update::compareVersions(key(Update::$updates), Update::$latestVersion)) { ?>
-						<a href="http://fusion-hub.com/account/updates" class="button">Click here to download v<?php echo Update::$latestVersion; ?></a>
+				<?php } elseif(isset($_GET['version']) && isset($_GET['action']) && $_GET['action'] == "import") { ?>
+					All changes have been successfully imported
+				<?php } else { ?>
+					<?php if(!Update::compareVersions(key(Update::$updates), Update::$latestVersion)) { ?>
+						<a href="http://fusion.raxezdev.com/update" class="button">Click here to download v<?php echo Update::$latestVersion; ?></a>
 					<?php } ?>
 
-					<?php if ( ! count(Update::$updates)) : ?>
+					<?php if(!count(Update::$updates)) { ?>
 						<div class="divider"></div>
 						There are no update packages downloaded.
-					<?php else : ?>
-						<?php foreach(Update::$updates as $version => $contents) : ?>
+					<?php } else { ?>
+						<?php foreach(Update::$updates as $version => $contents) { ?>
 							<div class="divider"></div>
 							<article class="update <?php echo (!Update::compareVersions(Update::$currentVersion, $version)) ? "" : "old" ?>">
 								<h1><span class="tag <?php echo (!Update::compareVersions(Update::$currentVersion, $version)) ? "good" : "" ?>"><?php echo $version; ?></span></h1>
@@ -75,46 +66,28 @@
 										<b>Special instructions:</b> <?php echo $contents['instructions']; ?>
 									</div>
 								<?php } ?>
-								
-								<h3>Automated installation (recommended)</h3>
-								<ol>
-									<?php if (count($contents['sql']) or count($contents['sql'])) : ?>
-										<li><a href="?action=install&version=<?php echo $version; ?>">Click here to install</a></li>
-									<?php endif; ?>
 
-									<?php if(count($contents['tools'])) : ?>
-										<?php foreach($contents['tools'] as $tool) : ?>
-											<li><a href="?version=<?php echo $version; ?>&action=<?php echo $tool; ?>">Click here to use tool: <?php echo preg_replace("/_/", " ", $tool);?></a></li>
-										<?php endforeach; ?>
-										</ul>
-									<?php endif; ?>
-								</ol>
-								
-								<h3>Manual installation</h3>
-								<p>If, for any reasons, errors occur during the automated installation, or if you want to keep track of the changes files in this update, you can use this instructions to install the update manually.</p>
 								<ol>
-									<?php if(count($contents['sql'])) : ?>
-										<?php foreach($contents['sql'] as $sql) : ?>
-											<li>Import <b><?php echo $sql; ?></b> to your database.</b>
-										<?php endforeach; ?>
-									<?php endif; ?>
+									<?php if(count($contents['sql'])) { ?>
+										<li><a href="?version=<?php echo $version; ?>&action=import">Click here to import database changes</a></li>
+									<?php } ?>
 
-									<?php if(count($contents['zip'])) : ?>
-										<?php foreach($contents['zip'] as $zip) : ?>
+									<?php if(count($contents['zip'])) { ?>
+										<?php foreach($contents['zip'] as $zip) { ?>
 											<li>Extract <b><?php echo $zip; ?></b> into your web folder where your FusionCMS website is located (usually www or htdocs) and override the existing files.</li>
-										<?php endforeach; ?>
-									<?php endif; ?>
+										<?php } ?>
+									<?php } ?>
 
-									<?php if(count($contents['tools'])) : ?>
-										<?php foreach($contents['tools'] as $tool) : ?>
+									<?php if(count($contents['tools'])) { ?>
+										<?php foreach($contents['tools'] as $tool) { ?>
 											<li><a href="?version=<?php echo $version; ?>&action=<?php echo $tool; ?>">Click here to use tool: <?php echo preg_replace("/_/", " ", $tool);?></a></li>
-										<?php endforeach; ?>
-									<?php endif; ?>
+										<?php } ?>
+									<?php } ?>
 								</ol>
 							</article>
-						<?php endforeach; ?>
-					<?php endif; ?>
-				<?php endif; ?>
+						<?php } ?>
+					<?php } ?>
+				<?php } ?>
 			</section>
 		</section>
 	</body>
