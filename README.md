@@ -10,7 +10,7 @@ CMS Version: 6.2.1
 - Vote System
 - Login
 - Donation System
-- Account Settings (redirect not fixed)
+- Account Settings (redirect Fixed!)
 
 
 
