@@ -113,7 +113,6 @@ var Gm = {
 
 			$.post(Config.URL + "gm/sendItem/" + realm + "/" + id, {csrf_token_name: Config.CSRF, item:item}, function(data)
 			{
-				console.log(data);
 				UI.alert(lang("item_sent", "gm"));
 			});
 		});

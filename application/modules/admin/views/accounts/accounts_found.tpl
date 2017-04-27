@@ -24,7 +24,7 @@
 	<input type="text" id="password" name="password" placeholder="Enter a new password" {if !hasPermission("editAccounts")}disabled="disabled"{/if}/>
 
 	<label for="gm_level">GM level</label>
-	<input type="text" id="gm_level" name="gm_level" value="{$access_id.gmlevel}" {if !hasPermission("editAccounts")}disabled="disabled"{/if}/>
+	<input type="text" id="gm_level" name="gm_level" value="{if !$access_id.gmlevel}0{else}{$access_id.gmlevel}{/if}" {if !hasPermission("editAccounts")}disabled="disabled"{/if}/>
 
 	<label for="expansion">Expansion</label>
 	<select id="expansion" name="expansion" {if !hasPermission("editAccounts")}disabled="disabled"{/if}>

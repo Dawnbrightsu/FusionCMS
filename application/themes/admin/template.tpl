@@ -128,7 +128,7 @@
 		<!-- Top bar -->
 		<header>
 			<div class="center_1020">
-				<a href="#" class="logo"></a>
+				<a href="{$url}admin/" class="logo"></a>
 
 				<!-- Top menu -->
 				<aside class="right">
@@ -203,10 +203,10 @@
 				<aside id="logo"><a href="#" class="logo"></a></aside>
 				<div class="divider"></div>
 				<aside id="links">
-					<a href="http://fusion.raxezdev.com/" target="_blank">FusionHub</a>
-					<a href="http://fusion.raxezdev.com/modules" target="_blank">Modules</a>
-					<a href="http://fusion.raxezdev.com/themes" target="_blank">Themes</a>
-					<a href="http://fusion.raxezdev.com/support" target="_blank">Support</a>
+					<a href="http://www.fusion-hub.com" target="_blank">FusionHub</a>
+					<a href="http://www.fusion-hub.com/modules" target="_blank">Modules</a>
+					<a href="http://www.fusion-hub.com/themes" target="_blank">Themes</a>
+					<a href="http://www.fusion-hub.com/support" target="_blank">Support</a>
 				</aside>
 				<div class="divider"></div>
 				<aside id="twitter">

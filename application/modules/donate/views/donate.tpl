@@ -1,8 +1,8 @@
 <div id="donate">
 	{if $donate_paypal.use || $donate_paygol.use}
 		<div id="donate_select">
-			<a href="javascript:void(0)" onClick="Donate.showPayPal(this)" class="nice_active nice_button">{lang("paypal", "donate")}</a>
-			<a href="javascript:void(0)" onClick="Donate.showPayGol(this)" class="{if !$donate_paypal.use}nice_active{/if} nice_button">{lang("paygol", "donate")}</a>
+			{if $donate_paypal.use}<a href="javascript:void(0)" onClick="Donate.showPayPal(this)" class="nice_active nice_button">{lang("paypal", "donate")}</a>{/if}
+			{if $donate_paygol.use}<a href="javascript:void(0)" onClick="Donate.showPayGol(this)" class="{if !$donate_paypal.use}nice_active{/if} nice_button">{lang("paygol", "donate")}</a>{/if}
 		</div>
 
 		<div class="ucp_divider"></div>

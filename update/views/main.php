@@ -41,7 +41,7 @@
 					All changes have been successfully imported
 				<?php } else { ?>
 					<?php if(!Update::compareVersions(key(Update::$updates), Update::$latestVersion)) { ?>
-						<a href="http://fusion.raxezdev.com/update" class="button">Click here to download v<?php echo Update::$latestVersion; ?></a>
+						<a href="http://fusion-hub.com/account/updates" class="button">Click here to download v<?php echo Update::$latestVersion; ?></a>
 					<?php } ?>
 
 					<?php if(!count(Update::$updates)) { ?>

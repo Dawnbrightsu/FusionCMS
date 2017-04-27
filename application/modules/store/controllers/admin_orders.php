@@ -32,13 +32,13 @@ class Admin_orders extends MX_Controller
 				{
 					$item = $this->store_model->getItem($value['id']);
 
-					if(isset($value['character']))
+					if($item && isset($value['character']))
 					{
 						$character = $this->realms->getRealm($item['realm'])->getCharacters()->getNameByGuid($value['character']);
 					}
 					
-					$completed[$k]["json"][$key]['itemName'] = $item['name'];
-					$completed[$k]["json"][$key]['characterName'] = (isset($character)) ? $character : "Unknown";
+					$completed[$k]['json'][$key]['itemName'] = $item ? $item['name'] : 'Unknown';
+					$completed[$k]['json'][$key]['characterName'] = (isset($character)) ? $character : 'Unknown';
 				}
 			}
 		}
@@ -54,13 +54,13 @@ class Admin_orders extends MX_Controller
 				{
 					$item = $this->store_model->getItem($value['id']);
 
-					if(isset($value['character']))
+					if($item && isset($value['character']))
 					{
 						$character = $this->realms->getRealm($item['realm'])->getCharacters()->getNameByGuid($value['character']);
 					}
 
-					$failed[$k]["json"][$key]['itemName'] = $item['name'];
-					$failed[$k]["json"][$key]['characterName'] = (isset($character)) ? $character : "Unknown";
+					$failed[$k]['json'][$key]['itemName'] = $item ? $item['name'] : 'Unknown';
+					$failed[$k]['json'][$key]['characterName'] = (isset($character)) ? $character : 'Unknown';
 				}
 			}
 		}
@@ -125,13 +125,13 @@ class Admin_orders extends MX_Controller
 				{
 					$item = $this->store_model->getItem($value['id']);
 
-					if(isset($value['character']))
+					if($item && isset($value['character']))
 					{
 						$character = $this->realms->getRealm($item['realm'])->getCharacters()->getNameByGuid($value['character']);
 					}
 					
-					$results[$k]["json"][$key]['itemName'] = $item['name'];
-					$results[$k]["json"][$key]['characterName'] = (isset($character)) ? $character : "Unknown";
+					$results[$k]['json'][$key]['itemName'] = $item ? $item['name'] : 'Unknown';
+					$results[$k]['json'][$key]['characterName'] = (isset($character)) ? $character : 'Unknown';
 				}
 			}
 
@@ -140,7 +140,7 @@ class Admin_orders extends MX_Controller
 				'results' => $results
 			);
 
-			$output = $this->template->loadPage("admin_list.tpl", $data);
+			$output = $this->template->loadPage('admin_list.tpl', $data);
 
 			die($output);
 		}

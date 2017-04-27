@@ -5,7 +5,7 @@
 				<tr>
 					<td width="13%">{date("Y/m/d", $paypal_log.timestamp)}</td>
 					<td width="13%">
-						<a href="{$url}profile/{$paypal_log.user_id}" target="_blank">
+						<a href="{$url}admin/accounts/get/{$paypal_log.user_id}" target="_blank">
 							{$paypal_log.nickname}
 						</a>
 					</td>
@@ -38,7 +38,7 @@
 				<tr>
 					<td width="15%">{date("Y/m/d", $paygol_log.timestamp)}</td>
 					<td width="13%">
-						<a href="{$url}profile/{$paygol_log.custom}" target="_blank">
+						<a href="{$url}admin/accounts/get/{$paygol_log.custom}" target="_blank">
 							{$paygol_log.nickname}
 						</a>
 					</td>

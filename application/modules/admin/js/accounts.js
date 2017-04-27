@@ -23,6 +23,22 @@ var Accounts = {
 			});
 		});
 	},
+
+	getAccount: function(id) 
+	{
+		$("#form_accounts_search").html('<center><img src="' + Config.URL + 'application/themes/admin/images/ajax.gif" /><br /><br /></center>');
+
+		$.post(Config.URL + "admin/accounts/search/" + id, {auto: true, csrf_token_name: Config.CSRF}, function(data)
+		{
+			$("#form_accounts_search").fadeOut(150, function()
+			{
+				$(this).html(data).fadeIn(500, function()
+				{
+					Tooltip.refresh();
+				});
+			});
+		});
+	},
 	
 	/**
 	 * Submit the form contents to the save link

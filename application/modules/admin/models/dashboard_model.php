@@ -120,7 +120,14 @@ class Dashboard_model extends CI_Model
 		{
 			$row = $query->result_array();
 
-			return $row[0]['amount'];
+			$total = 0;
+
+			foreach($row as $item)
+			{
+				$total += $item['amount'];
+			}
+
+			return $total;
 		}
 		else
 		{

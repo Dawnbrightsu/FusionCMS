@@ -16,7 +16,7 @@
 						<tr>
 							<td width="20%">{date("Y/m/d", $failed_log.timestamp)}</td>
 							<td width="16%">
-								<a href="{$url}profile/{$failed_log.user_id}" target="_blank">
+								<a href="{$url}admin/accounts/get/{$failed_log.user_id}" target="_blank">
 									{$failed_log.username}
 								</a>
 							</td>
@@ -62,7 +62,7 @@
 						<tr>
 							<td width="20%">{date("Y/m/d", $completed_log.timestamp)}</td>
 							<td width="16%">
-								<a href="{$url}profile/{$completed_log.user_id}" target="_blank">
+								<a href="{$url}admin/accounts/get/{$completed_log.user_id}" target="_blank">
 									{$completed_log.username}
 								</a>
 							</td>

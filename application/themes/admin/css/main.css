@@ -639,6 +639,7 @@ header nav .active:hover {
 	text-decoration:none;
 	color:#262626 !important;
 	border-radius:3px;
+    cursor: pointer;
 	background-color:#cdcdcd;
 	border:1px solid #8e8e8e;
 	box-shadow:0px 1px 0px #fff inset, 0px 1px 0px #fff;
@@ -669,8 +670,8 @@ header nav .active:hover {
 #main .right .side_left .box li .button:hover, #main .right .side_right .box .button:hover, input[type="submit"]:hover, .nice_button:hover {
 	box-shadow:0px 1px 0px #7dc2ea inset, 0px 1px 0px #fff;
 	border:1px solid #305e79;
-	color:#112e3f;
-	text-shadow:1px 1px 0px #2fa4d1;
+	color:white !important;
+	text-shadow:1px 1px 0px rgba(0,0,0,0.4);
 }
 
 #main .right .side_left .box li .button:active, #main .right .side_right .box .button:active, input[type="submit"]:active, .nice_button:active {

@@ -83,11 +83,11 @@ class Postback_paygol extends MX_Controller
 
 		$this->fields['timestamp'] = time();
 
+		$this->plugins->onDonationPostback($this->fields['custom'], true, $this->fields['converted_price'], $this->fields['points']);
+
 		$this->db->insert("paygol_logs", $this->fields);
 		
 		$this->updateMonthlyIncome($this->fields['converted_price']);
-
-		$this->plugins->onDonationPostback($this->fields['custom'], $this->fields['converted_price'], $this->fields['points']);
 
 		die('success');
 	}
