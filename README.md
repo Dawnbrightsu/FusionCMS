@@ -1,13 +1,10 @@
-# ![logo](http://hysteria-gaming.org/img/logo.png) 
+# Dawnbrightsu's FusionCMS
 
 ## Intro
-This was the latest Free version of FusionCMS
-It was forked from kjanko's bitbucket.
+This is the FusionCMS that Dawnbrightsu is working on updating it with fixes!
 
-If you have any fixes, modifications or etc.. you can make a pull request, i'll add it.
+CMS Version: 6.1.7
 
-## TODO
-- Update all libraries
-- Update all modules
-- Implement MoP Support
-- Create a TrinityCore B-Net authserver support.
+
+## Do you have any contributions?
+Please make a pull request and I will be glad on checking it and merge it!
