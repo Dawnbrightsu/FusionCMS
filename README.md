@@ -3,7 +3,7 @@
 ## Intro
 This is the FusionCMS that Dawnbrightsu is working on updating it with fixes!
 
-CMS Version: 6.1.7
+CMS Version: 6.2.1
 
 
 ## Do you have any contributions?
