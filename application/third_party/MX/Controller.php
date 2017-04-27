@@ -97,7 +97,7 @@ class MX_Controller
 		// Does the module got the correct version?
 		if(!CI::$APP->template->compareVersions($module['min_required_version'], CI::$APP->config->item('FusionCMSVersion')))
 		{
-			show_error("The module <b>".strtolower($moduleName)."</b> requires FusionCMS v".$module['min_required_version'].", please update at fusion.raxezdev.com");
+			show_error("The module <b>".strtolower($moduleName)."</b> requires FusionCMS v".$module['min_required_version'].", please update at fusion-hub.com");
 		}
 
 		/* copy a loader instance and initialize */

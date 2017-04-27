@@ -5,7 +5,7 @@
  * @version 6.0
  * @author Jesper Lindström
  * @author Xavier Geerinck
- * @link http://raxezdev.com/fusioncms
+ * @link http://fusion-hub.com
  */
 
 

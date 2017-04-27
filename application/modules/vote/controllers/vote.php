@@ -78,17 +78,17 @@ class Vote extends MX_Controller
 		//Check if that site exists and that the user didn't voted for it yet.
 		if($vote_site && $can_vote)
 		{
-			//Update the vp if needed or else just go to the url if we got api enabled.
-			if($vote_site['api_enabled'])
+			//Update the vp if needed or else just go to the url if we got vote callback enabled.
+			if($vote_site['callback_enabled'])
 			{
-				$custom_callback_url = $this->formatCallbackUrl($vote_site['vote_url'], $vote_site);
-		
+				$vote_url = preg_replace("/\{user_id\}/", $this->user->getId(), $vote_site['vote_url']);
+				
 				if($this->input->post("isFirefoxHerpDerp"))
 				{
-					die($custom_callback_url);
+					die($vote_url);
 				}
 
-				redirect($custom_callback_url);
+				redirect($vote_url);
 			}
 			else
 			{
@@ -110,12 +110,5 @@ class Vote extends MX_Controller
 		{
 			die(lang("already_voted", "vote"));
 		}
-	}
-
-	public function formatCallbackUrl($url, $vote_site)
-	{
-		$normal_url = preg_replace("/\{account_id\}/", $this->user->getId(), $url);
-
-		return $normal_url;
 	}
 }

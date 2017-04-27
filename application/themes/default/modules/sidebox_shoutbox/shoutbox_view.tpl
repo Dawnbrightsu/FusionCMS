@@ -112,7 +112,7 @@
 			id="shoutbox_content"
 			placeholder="Enter a message..."
 			onFocus="this.style.height='70px';"
-			onBlur="this.style.height='16px'"
+			onBlur="window.setTimeout(function() { $('#shoutbox_content').height('16px'); },700);"
 			onkeyup="UI.limitCharacters(this, 'shoutbox_characters_remaining')"
 			maxlength="255"
 			spellcheck="false"></textarea>

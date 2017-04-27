@@ -103,6 +103,7 @@ var Router = {
 					$("#content_ajax").html(data.content);
 					
 					Tooltip.refresh();
+					UI.dropdown.initialize();
 
 					// Change the title
 					if(data.title.length > 0)

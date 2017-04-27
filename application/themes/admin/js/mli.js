@@ -3,7 +3,7 @@
  * @package FusionCMS
  * @version 6.1
  * @author Jesper Lindström
- * @link http://raxezdev.com/fusioncms
+ * @link http://fusion-hub.com
  */
 
 function MultiLanguageInput(field)

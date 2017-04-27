@@ -133,7 +133,7 @@
 				<!-- Top menu -->
 				<aside class="right">
 					<nav>
-						<a href="{$url}ucp" data-hasevent="1">
+						<a target="_blank" href="{$url}ucp" data-hasevent="1">
 							<div class="icon logout"></div>
 							Go back
 						</a>
@@ -209,10 +209,10 @@
 					<a href="http://www.fusion-hub.com/support" target="_blank">Support</a>
 				</aside>
 				<div class="divider"></div>
-				<aside id="twitter">
-					<h1>Follow us on Twitter!</h1>
-					<div id="twitter_icon"></div>
-					<a href="http://twitter.com/FusionHub" target="_blank">@FusionHub</a>
+				<aside id="facebook">
+					<h1>Like us on Facebook!</h1>
+					<div id="fb_icon"></div>
+					<a href="http://facebook.com/HeroicForge" target="_blank">HeroicForge</a>
 				</aside>
 				<div class="divider"></div>
 				<aside id="html5">

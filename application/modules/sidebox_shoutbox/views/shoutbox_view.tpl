@@ -122,8 +122,8 @@
 			id="shoutbox_content"
 			placeholder="{lang("enter", "sidebox_shoutbox")}"
 			onFocus="this.style.height='70px';"
-			onBlur="this.style.height='16px'"
 			onkeyup="UI.limitCharacters(this, 'shoutbox_characters_remaining')"
+			onBlur="window.setTimeout(function() { $('#shoutbox_content').height('16px'); },700);"
 			maxlength="255"
 			spellcheck="false"></textarea>
 		<div class="shout_characters_remaining"><span id="shoutbox_characters_remaining">0 / 255</span></div>

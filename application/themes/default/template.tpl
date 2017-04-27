@@ -52,7 +52,7 @@
 				<div class="clear"></div>
 			</div>
 			<footer>
-				<a href="http://raxezdev.com/fusioncms" id="logo" target="_blank"></a>
+				<a href="http://www.fusion-hub.com" id="logo" target="_blank"></a>
 				<p>&copy; Copyright {date("Y")} {$serverName}</p>
 			</footer>
 		</section>

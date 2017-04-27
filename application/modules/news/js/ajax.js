@@ -3,7 +3,7 @@
  * @version 6.X
  * @author Jesper Lindström
  * @author Xavier Geernick
- * @link http://raxezdev.com/fusioncms
+ * @link http://fusion-hub.com
  */
 
 function Ajax()

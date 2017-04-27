@@ -1,32 +1,28 @@
 <?php
 
-class Wowstatus extends Plugin
+/**
+ * wowstatus.net vote postpack
+ * described at: http://www.wowstatus.net/?p=FAQ
+ *
+ * @package FusionCMS
+ * @author Maxi Arnicke
+ * @link http://fusion-hub.com
+ */
+
+require_once(APPPATH.'modules/vote/plugins/classes/VoteCallbackPlugin.php');
+
+class Wowstatus extends VoteCallbackPlugin
 {
-	private $url = "wowstatus.net";
-
-	public function callback()
+	public $url = "wowstatus.net";
+	public $voteLinkFormat = "{vote_link}&user={user_id}";
+	
+	protected function checkAccess()
 	{
-		$this->CI->load->model('vote/vote_model');
-
-		//Get the account id of the guy that voted, this id was sent from the site.
-		$account_id = $this->CI->input->post('user');
-		
-		if ( ! $account_id || $this->CI->input->ip_address() != gethostbyname('wowstatus.net'))
-			die('No access');
-		
-		$vote_site = $this->CI->vote_model->getVoteSiteByUrl($this->url);
-		
-		if($this->CI->vote_model->canVote($vote_site['id']))
-		{
-			//Give him the amount of vote points that he gets for it.
-			$this->CI->vote_model->vote_log($account_id, $this->CI->input->ip_address(), $vote_site['id']);
-			$this->CI->vote_model->updateVp($account_id, $vote_site['points_per_vote']);
-
-			$this->CI->plugins->onVote($account_id, $vote_site);
-
-			die('Points given');
-		}
-
-		die('No points given');
+		return $this->CI->input->ip_address() == gethostbyname('wowstatus.net');
+	}
+	
+	protected function readUserId()
+	{
+		return $this->input->post('user');
 	}
 }

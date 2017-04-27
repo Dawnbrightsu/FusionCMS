@@ -5,7 +5,7 @@
  * @author Jesper Lindström
  * @author Xavier Geerinck
  * @author Elliott Robbins
- * @link http://raxezdev.com/fusioncms
+ * @link http://fusion-hub.com
  */
 
 class Plugins
@@ -51,6 +51,15 @@ class Plugins
 
 		include($filename);
 		return (isset($config) ? $config : null);
+	}
+	
+	/**
+	 * Returns all loaded plugins.
+	 * @return Array
+	 */
+	public function getPlugins()
+	{
+		return $this->plugins;
 	}
 	
 	/**

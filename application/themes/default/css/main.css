@@ -355,6 +355,7 @@ footer #logo:hover {
 	font-family:MuseoSans;
 	margin-top:10px;
 	background-position:middle;
+	cursor:pointer;
 }
 
 .nice_button:hover, .nice_active, input[type="submit"]:hover {

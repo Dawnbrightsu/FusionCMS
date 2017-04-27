@@ -497,9 +497,8 @@ header nav .active:hover {
 }
 
 #main .right h2 img {
-	margin-top:3px;
-	position:absolute;
-	margin-left:-25px;
+	vertical-align: -2px;
+	margin-right: 4px;
 }
 
 #main .right .info_box aside {
@@ -579,6 +578,10 @@ header nav .active:hover {
 		color-stop(1, #DDDDDD)
 	);
 	border-bottom:1px solid #a5a5a5;
+}
+
+#main .right .box h3 {
+	border-bottom: 1px solid #ccc;
 }
 
 #main .right .big {
@@ -679,6 +682,29 @@ header nav .active:hover {
 	box-shadow:0px 1px 0px #fff;
 }
 
+/* regular lists */
+#main .right .box .list {
+}
+
+#main .right .box ol.list, #main .right .box ol.list li {
+	list-style: decimal;
+}
+
+#main .right .box ul.list, #main .right .box ul.list li {
+	list-style: disc;
+}
+
+#main .right .box ol.list, #main .right .box ul.list {
+	margin: 0;
+	padding: 0;
+}
+
+#main .right .box .list li, #main .right .box .list li {
+	margin: 4px 5px 4px 40px;
+	padding: 4px 0px;
+	background: inherit;
+	border: inherit;
+}
 
 #main .right .side_right {
 	width:235px;
@@ -717,6 +743,78 @@ header nav .active:hover {
 	border:1px solid red;
 	box-shadow:0px 1px 0px #fff inset, 0px 1px 1px #999, 0px 0px 10px red;
 }
+
+/* Dropdown panels */
+#main .right .dropdown.help h3:before {
+	content: '?';
+	margin: 0;
+	margin-right: 8px;
+	margin-left: 4px;
+	vertical-align: -1px;
+	font-size: 18px;
+	text-shadow: 0px 0px 5px black;
+}
+
+#main .right .dropdown h3 {
+	display: block;
+	border-radius: 3px;
+	font-size: 14px;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+	font-weight:normal;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	cursor: pointer;
+	padding: 4px 8px;
+	color: white;
+	line-height: 25px;
+	margin: 0;
+	
+	background-color: #1d6d9c;
+	background-image: linear-gradient(bottom, #1D6D9C 0%, #3D92C4 100%);
+	background-image: -o-linear-gradient(bottom, #1D6D9C 0%, #3D92C4 100%);
+	background-image: -moz-linear-gradient(bottom, #1D6D9C 0%, #3D92C4 100%);
+	background-image: -webkit-linear-gradient(bottom, #1D6D9C 0%, #3D92C4 100%);
+	background-image: -ms-linear-gradient(bottom, #1D6D9C 0%, #3D92C4 100%);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #1D6D9C),
+		color-stop(1, #3D92C4)
+	);
+}
+
+#main .right .dropdown h3:hover {
+	background-color: #1d6d9c;
+	background-image: linear-gradient(bottom, #217aaf 0%, #40a7e3 100%);
+	background-image: -o-linear-gradient(bottom, #217aaf 0%, #40a7e3 100%);
+	background-image: -moz-linear-gradient(bottom, #217aaf 0%, #40a7e3 100%);
+	background-image: -webkit-linear-gradient(bottom, #217aaf 0%, #40a7e3 100%);
+	background-image: -ms-linear-gradient(bottom, #217aaf 0%, #40a7e3 100%);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #217aaf),
+		color-stop(1, #40a7e3)
+	);
+}
+
+#main .right .dropdown.active h3 {
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+#main .right .dropdown > div {
+	display:none;
+	margin: 0px;
+	padding: 10px 14px;
+	background: white;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+	box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
+}
+
 
 /* Form styles */
 form {
@@ -801,7 +899,7 @@ select {
 	border-radius:2px;
 	-moz-border-radius:2px;
 	-webkit-border-radius:2px;
-	margin:5px;
+	margin:15px 5px 20px 5px;
 	margin-left:auto;
 	margin-right:auto;
 	display:block;
@@ -858,12 +956,12 @@ footer #links a:hover {
 	color:#499fd1;
 }
 
-footer #twitter {
+footer #facebook {
 	width:255px;
 	text-shadow:1px 1px 0px #000;
 }
 
-footer #twitter h1 {
+footer #facebook h1 {
 	color:#cccccc;
 	font-size:18px;
 	font-weight:normal;
@@ -873,24 +971,24 @@ footer #twitter h1 {
 	text-align:center;
 }
 
-footer #twitter #twitter_icon {
+footer #facebook #fb_icon {
 	float:left;
-	background-image:url(../images/twitter.png);
-	width:31px;
+	background-image:url(../images/facebook.png);
+	width:25px;
 	height:21px;
-	margin-left:40px;
-	margin-top:5px;
-	margin-right:10px;
+	margin-left:47px;
+	margin-top:2px;
+	margin-right:8px;
 }
 
-footer #twitter a {
+footer #facebook a {
 	color:#499fd1;
 	font-size:20px;
 	text-decoration:none;
 	float:left;
 }
 
-footer #twitter a:hover {
+footer #facebook a:hover {
 	color:#fff;
 }
 

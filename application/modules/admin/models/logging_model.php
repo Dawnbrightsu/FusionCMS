@@ -4,7 +4,7 @@
  * @version 6.X
  * @author Jesper Lindström
  * @author Xavier Geerinck
- * @link http://raxezdev.com/fusioncms
+ * @link http://fusion-hub.com
  */
 class Logging_model extends CI_Model
 {
@@ -35,7 +35,7 @@ class Logging_model extends CI_Model
 
 		if($search)
 		{
-			$query = $this->db->query("SELECT * FROM `logs` WHERE ".(($module) ? "`module` = '".$module."'" : "")." AND (`user` = ? OR `ip` = ?)", array($userId, $search));
+			$query = $this->db->query("SELECT * FROM `logs` WHERE ".(($module) ? "`module` = '".$module."' AND " : "")." (`user` = ? OR `ip` = ?)", array($userId, $search));
 		}
 		else
 		{

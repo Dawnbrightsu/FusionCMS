@@ -91,7 +91,7 @@ var Admin = {
 				break;
 
 				case '2':
-					UI.alert('This copy of FusionCMS has been terminated due to illegal usage. If you actually own a legit copy, please contact us at fusion.raxezdev.com', 6000);
+					UI.alert('This copy of FusionCMS has been terminated due to illegal usage. If you actually own a legit copy, please contact us at fusion-hub.com', 6000);
 
 					setTimeout(function()
 					{

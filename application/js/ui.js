@@ -3,7 +3,7 @@
  * @version 6.X
  * @author Jesper Lindström
  * @author Xavier Geernick
- * @link http://raxezdev.com/fusioncms
+ * @link http://fusion-hub.com
  */
 
 function UI()
@@ -27,6 +27,9 @@ function UI()
 
 		// Give older browsers some html5-placeholder love!
 		$('input[placeholder], textarea[placeholder]').placeholder();
+		
+		// Initialize dropdown panels
+		UI.dropdown.initialize();
 
 		// Enable tooltip
 		Tooltip.initialize();
@@ -210,6 +213,36 @@ function UI()
 		// Change the indicator
 		document.getElementById(indicator).innerHTML = length + " / " + max;
 	}
+	
+	/**
+	 * Creates a expandable box
+	 */
+	this.dropdown = {
+		initialize: function()
+		{
+			$(document).ready(function() {
+				UI.dropdown.create('.dropdown');
+			});
+		},
+		
+		create: function(element)
+		{
+			$(element)
+				.not('[data-dropdown-initialized]')
+				.attr('data-dropdown-initialized', 'true')
+				.children('h3')
+				.bind('click', function() 
+				{
+					$(this).next('div').slideToggle(200, function() {
+
+						if ($(this).is(':visible'))
+							$(this).parent('.dropdown').addClass('active');
+						else
+							$(this).parent('.dropdown').removeClass('active');
+					});
+				});
+		}
+	}
 }
 
 /**
@@ -227,12 +260,6 @@ function Tooltip()
 
 		// Add mouse-over event listeners
 		this.addEvents();
-
-		// Add mouse listener
-		$(document).mousemove(function(e)
-		{
-			Tooltip.move(e.pageX, e.pageY);
-		});
 	}
 
 	/**
@@ -247,18 +274,29 @@ function Tooltip()
 		// Re-add
 		this.addEvents();
 	}
-
+	
+	/**
+	 * Adds mouseover events to all elements
+	 * that should show a tooltip.
+	 */
 	this.addEvents = function()
 	{
+		Tooltip.addEvents.handleMouseMove = function(e)
+		{
+			Tooltip.move(e.pageX, e.pageY);
+		}
+		
 		// Add mouse-over event listeners
 		$("[data-tip]").hover(
 			function()
 			{
+				$(document).bind('mousemove', Tooltip.addEvents.handleMouseMove);
 				Tooltip.show($(this).attr("data-tip"));
 			},
 			function()
 			{
 				$("#tooltip").hide();
+				$(document).unbind('mousemove', Tooltip.addEvents.handleMouseMove);
 			}
 		);
 
@@ -267,6 +305,7 @@ function Tooltip()
 			$("[rel]").hover(
 				function()
 				{
+					$(document).bind('mousemove', Tooltip.addEvents.handleMouseMove);
 					if(/^item=[0-9]*$/.test($(this).attr("rel")))
 					{
 						Tooltip.Item.get(this, function(data)
@@ -277,6 +316,7 @@ function Tooltip()
 				},
 				function()
 				{
+					$(document).unbind('mousemove', Tooltip.addEvents.handleMouseMove);
 					$("#tooltip").hide();
 				}
 			);

@@ -2,10 +2,9 @@
 
 class Callback extends MX_Controller
 {
-	public function index($callback)
+	public function index($plugin)
 	{
-		$this->plugins->$callback->callback();
-
-		die();
+		$this->plugins->$plugin->handleCallback();
+		exit;
 	}
 }

@@ -41,27 +41,43 @@
 
 	<form onSubmit="Topsites.create(this); return false" id="submit_form">
 
-		<label for="vote_sitename">Site name</label>
+		<label for="vote_url">Your vote link</label>
+		<input type="text" name="vote_url" id="vote_url" placeholder="http://" onChange="Topsites.check(this)" />
+
+		<label for="vote_sitename">Site title</label>
 		<input type="text" name="vote_sitename" id="vote_sitename"/>
 
-		<label for="vote_url">Site URL</label>
-		<input type="text" name="vote_url" id="vote_url" placeholder="http://" onChange="Topsites.check(this)"/>
-
 		<label for="vote_image">Vote site image (will be auto-completed if URL is recognized)</label>
-		<input type="text" name="vote_image" id="vote_image" placeholder="(optional)"/>
-
+		<input type="text" name="vote_image" id="vote_image" placeholder="(optional)" onChange="Topsites.updateImagePreview(this.value)"/>
+		
+		<div id="vote_image_preview" style="display:none">
+			<small>Preview:</small><br />
+			<img alt="Loading..." />
+		</div>
+		
 		<label for="hour_interval">Hour interval</label>
 		<input type="text" name="hour_interval" id="hour_interval" value="12"/>
 
-		<label for="points_per_vote">Voting points</label>
+		<label for="points_per_vote">Vote points per vote</label>
 		<input type="text" name="points_per_vote" id="points_per_vote" value="1"/>
 
-		<div id="api" style="display:none;">
-			<label for="api_enabled">Enable postback (only some topsites support this - requires additional configuration on the topsite itself)</label>
-			<select id="api_enabled" name="api_enabled">
-				<option value="0" selected>No</option>
-				<option value="1">Yes</option>
-			</select>
+		<label for="callback_enabled" data-tip="If enabled, vote points are only credited if the user has actually voted. Not all topsites support this feature.">Enable vote verification (<a>?</a>)</label>
+		<div id="callback_form">
+			<div class="not-supported">This topsite is not supported.</div>
+			
+			<div class="form" style="display:none">
+				<select id="callback_enabled" name="callback_enabled" onChange="Topsites.updateLinkFormat()">
+					<option value="0" selected>No</option>
+					<option value="1">Yes</option>
+				</select>
+				
+				<div class="dropdown help">
+					<h3>How to configure vote verification for </h3>
+					<div>
+						
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<input type="submit" value="Submit topsite" />

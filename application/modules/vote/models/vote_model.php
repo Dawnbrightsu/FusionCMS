@@ -136,7 +136,7 @@ class Vote_model extends CI_Model
 			$time_back = time() - ($time_interval * 60 * 60);
 		
 			// Check for account or not
-			if(!$this->config->item('vote_ip_lock') && !$vote_site['api_enabled'])
+			if(!$this->config->item('vote_ip_lock') && !$vote_site['callback_enabled'])
 			{
 				$this->db->select('*')->from('vote_log')->where('vote_site_id', $vote_site_id)->where(array('ip' => $user_ip, 'time > ' => $time_back, 'user_id' => $this->user->getId()));
 			}
@@ -215,34 +215,58 @@ class Vote_model extends CI_Model
 		}
 	}
 	
-	public function canVote($vote_site_id)
+	/**
+	 * Checks if the current user can vote for the given site
+	 * at this time.
+	 * @param $vote_site_id ID of the vote site
+	 * @param $user_id Optional: ID of the user to check
+	 * @param $user_ip Optional: IP of the user to check
+	 */
+	public function canVote($vote_site_id, $user_id = null, $user_ip = null)
 	{
-		//Get the user ip
-		$user_ip = $this->input->ip_address();
-		
-		//Get the vote site
+		// Get the vote site
 		$vote_site = $this->getVoteSite($vote_site_id);
 		
-		//Get the hours between each vote
+		// Get the hours between each vote
 		$time_interval = $vote_site['hour_interval'];
 		
-		//Calculate the that should tell if they voted already or not.
+		// Calculate the that should tell if they voted already or not.
 		$time_back = time() - ($time_interval * 60 * 60);
 
-		// Check for account or not
-		$result = $this->getVoteLog($vote_site_id, $user_ip, $time_back, $this->config->item('vote_ip_lock'));
-
-		return $result;
+		// check if there are vote logs for this user / ip and time
+		if ($user_ip === null && $user_id === null)
+			$user_ip = $this->input->ip_address();
+		
+		if ($user_id === null)
+			$user_id = $this->user->getId();
+		
+		$sql = '
+			SELECT * 
+			FROM `vote_log`
+			WHERE 
+			`vote_site_id` = ? AND `time` > ?
+		';
+		
+		if ($this->config->item('vote_ip_lock') && $user_ip) {
+			$sql .= " AND (user_id = ".$this->db->escape($user_id)." OR ip = ".$this->db->escape($user_ip).")";
+		}
+		else {
+			$sql .= " AND user_id = ".$this->db->escape($user_id);
+		}
+		
+		$query = $this->db->query($sql, array($vote_site_id, $time_back));
+		
+		if($query->num_rows() > 0)
+		{
+			//Voted already
+			return false;
+		}
+		else 
+		{
+			return true;
+		}
 	}
 	
-	public function getCustomCallbackUrl($voteSiteId)
-	{
-		$query = $this->db->query("SELECT * FROM vote_site_callback WHERE site_id = ?", array($voteSiteId));
-		$result = $query->result_array();
-		
-		return $result[0]['custom_callback_url'];
-	}
-
 	public function add($data)
 	{
 		$this->db->insert("vote_sites", $data);
@@ -256,7 +280,6 @@ class Vote_model extends CI_Model
 
 	public function delete($id)
 	{
-		$this->db->query("DELETE FROM vote_site_callback WHERE site_id=?", array($id));
 		$this->db->query("DELETE FROM vote_sites WHERE id=?", array($id));
 	}
 }

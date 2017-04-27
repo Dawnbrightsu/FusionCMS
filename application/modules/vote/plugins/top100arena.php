@@ -1,32 +1,28 @@
 <?php
 
-class Top100arena extends Plugin
+/**
+ * top100arena.com incentive voting
+ * described at: http://www.top100arena.com/incentive.asp
+ *
+ * @package FusionCMS
+ * @author Maxi Arnicke
+ * @link http://fusion-hub.com
+ */
+
+require_once(APPPATH.'modules/vote/plugins/classes/VoteCallbackPlugin.php');
+
+class Top100arena extends VoteCallbackPlugin
 {
-	private $url = "top100arena.net";
-
-	public function callback()
+	public $url = "top100arena.com";
+	public $voteLinkFormat = "{vote_link}&incentive={user_id}";
+	
+	protected function checkAccess()
 	{
-		$this->CI->load->model('vote/vote_model');
-
-		//Get the account id of the guy that voted, this id was sent from the site.
-		$account_id = $this->CI->input->post('postback');
-		
-		if ( ! $account_id || ! in_array($this->CI->input->ip_address(), array('209.59.143.11')))
-			die('No access');
-		
-		$vote_site = $this->CI->vote_model->getVoteSiteByUrl($this->url);
-		
-		if($this->CI->vote_model->canVote($vote_site['id']))
-		{
-			//Give him the amount of vote points that he gets for it.
-			$this->CI->vote_model->vote_log($account_id, $this->CI->input->ip_address(), $vote_site['id']);
-			$this->CI->vote_model->updateVp($account_id, $vote_site['points_per_vote']);
-
-			$this->CI->plugins->onVote($account_id, $vote_site);
-
-			die('Points given');
-		}
-
-		die('No points given');
+		return $this->CI->input->ip_address() == '209.59.143.11';
+	}
+	
+	protected function readUserId()
+	{
+		return $this->CI->input->post('postback');
 	}
 }

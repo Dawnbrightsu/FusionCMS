@@ -3,7 +3,7 @@
 	"description": "Clears users sessions and cookies to make them log out",
 	"author": {
 		"name": "FusionCMS",
-		"website": "http:\/\/raxezdev.com\/fusioncms"
+		"website": "http:\/\/fusion-hub.com"
 	},
 	
 	"enabled": true

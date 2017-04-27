@@ -1,7 +1,7 @@
 <section class="box big" id="realm_settings">
 	<h2><img src="{$url}application/themes/admin/images/icons/black16x16/ic_cloud.png"/> Realms (<div style="display:inline;" id="realm_count">{count($realms)}</div>)</h2>
 	<span>
-		<div style="float:right;" data-tip="The logon emulator is the emulator of the first realm"><b>Logon/realmd/auth emulator:</b> {strtoupper($realms[0]->getConfig("emulator"))}</div>
+		<div style="float:right;" data-tip="The logon emulator is the emulator of the first realm"><b>Logon/realmd/auth emulator:</b> {if $realms}{strtoupper($realms[0]->getConfig("emulator"))}{/if}</div>
 		<a class="nice_button" href="javascript:void(0)" onClick="Settings.showAddRealm()">Add a new realm</a>
 	</span>
 	<ul id="realm_list">
