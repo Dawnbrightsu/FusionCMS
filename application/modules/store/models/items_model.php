@@ -4,7 +4,7 @@ class Items_model extends CI_Model
 {
 	public function getItems()
 	{
-		$query = $this->db->query("SELECT i.*, g.title FROM store_items i, store_groups g WHERE g.id = i.group ORDER BY `group` ASC");
+		$query = $this->db->query("SELECT i.*, g.title, g.orderNumber FROM store_items i, store_groups g WHERE g.id = i.group ORDER BY `group` ASC");
 
 		if($query->num_rows() > 0)
 		{

@@ -40,7 +40,7 @@
 		{foreach from=$characters item=character}
 			<div class="search_result_realm_{$character.realm} search_result_character">
 				<a href="{$url}character/{$character.realm}/{$character.guid}"><img width="54" height="54" src="{$url}application/images/avatars/{$character.avatar}.gif" class="avatar"/></a>
-				<a class="color-c{$character.race} name" href="{$url}character/{$character.realm}/{$character.guid}">{$character.name}</a>
+				<a class="color-c{$character.class} name" href="{$url}character/{$character.realm}/{$character.guid}">{$character.name}</a>
 				<span>
 					<b>{$character.level}</b> {$character.raceName} {$character.className}<br />
 					{$character.realmName}

@@ -15,7 +15,7 @@
 
 				{foreach from=$realm->getCharacters()->getOnlinePlayers() item=character}
 				<tr>
-					<td width="15%"><a data-tip="{lang("view_profile", "online")}" href="{$url}character/{$realm->getId()}/{$character.name}">{$character.name}</a></td>
+					<td width="15%"><a data-tip="{lang("view_profile", "online")}" href="{$url}character/{$realm->getId()}/{$character.guid}">{$character.name}</a></td>
 					<td width="15%" align="center">{$character.level}</td>
 					<td width="15%" align="center"><img src="{$url}application/images/stats/{$character.race}-{$character.gender}.gif" /></td>
 					<td width="15%" align="center"><img src="{$url}application/images/stats/{$character.class}.gif" /></td>

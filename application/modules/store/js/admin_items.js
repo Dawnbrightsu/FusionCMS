@@ -175,6 +175,7 @@ var Items = {
 				{
 					$(this).find(".group_title").hide(0, function()
 					{
+						$(this).siblings(".group_order").hide(0);
 						$(this).siblings(".group_actions").show(0);
 					});
 				},
@@ -182,28 +183,33 @@ var Items = {
 				{
 					$(this).find(".group_actions").hide(0, function()
 					{
-						$(this).siblings(".group_title").show(0);
+						$(this).siblings(".group_order").show(0);
+						$(this).siblings(".group_title").show(0);					
 					});
 				}
 			);
 		});
 	},
 
-	renameGroup: function(id, field)
+	editGroup: function(id, field)
 	{
 		var nameField = $(field).parents("div").siblings(".group_title");
+		var orderField = $(field).parents("div").siblings(".group_order").find(".group_order_number");
 
-		var renameHTML = "<input type='text' id='rename'>";
+		var renameHTML = "<input placeholder='Title' type='text' id='rename'><br/><input value='"+orderField.html()+"' placeholder='Number to order' type='text' id='order'>";
 
 		UI.confirm(renameHTML, "Save", function()
 		{
 			var name = $("#rename").val();
+			var number = $("#order").val();
 
 			nameField.html(name);
+			orderField.html(number);
 
-			$.post(Config.URL + "store/admin_items/saveGroup/" + id, {csrf_token_name:Config.CSRF, title:name}, function()
+			$.post(Config.URL + "store/admin_items/saveGroup/" + id, {csrf_token_name:Config.CSRF, title:name, order:number}, function()
 			{
-				window.location.reload(true);
+				console.log("EXECUTED");
+				//window.location.reload(true);
 			});
 		});
 

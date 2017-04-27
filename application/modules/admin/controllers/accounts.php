@@ -133,6 +133,7 @@ class Accounts extends MX_Controller
 				{
 					$modules[$module]['name'] = (array_key_exists("name", $manifest)) ? $manifest['name'] : $module;
 					$modules[$module]['manifest'] = (array_key_exists("permissions", $manifest)) ? $manifest['permissions'] : false;
+					$modules[$module]['folderName'] = $module;
 				}
 			}
 		}
@@ -186,7 +187,7 @@ class Accounts extends MX_Controller
 		
 		if(!$external_account_data[column("account", "email")] || !$internal_account_data["nickname"])
 		{
-			die("UI.alert('The fields can\'t be empty')");
+			die("UI.alert('The following fields can\'t be empty: [email]')");
 		}
 
 		$this->accounts_model->save($id, $external_account_data, $external_account_access_data, $internal_account_data);

@@ -33,41 +33,47 @@
 		{/foreach}
 	</select>
 
-	{if hasPermission("editPermissions")}
-		<label data-tip="A user can be specifically allowed or denied to perform a certain action.<br />
-		By setting a user permission, the value you set overrides the group roles<br />
-		(example: the user group is allowed to submit comments, but you set the user<br />
-		specifically not to be allowed to - then the user won't be allowed to, despite<br />
-		being assigned to a group that is allowed to.)">User permissions <a>(?)</a></label>
-		<div id="roles">
-			{foreach from=$modules key=name item=module}
-				{if $module.manifest}
-					<div class="role_module">
-						<h3>{ucfirst($module.name)}</h3>
-						<table width="100%">
-							{if $module.manifest}
-								{foreach from=$module.manifest key=permissionName item=permission}
-									<tr>
-										<td width="12%" style="text-align:center;">
-											<select name="{$name}-{$permissionName}" id="{$name}-{$permissionName}" {if !hasPermission("editAccounts")}disabled="disabled"{/if}>
-												<option value="" selected>-</option>
-												<option value="1">Allow</option>
-												<option value="0">Deny</option>
-											</select>
-										</td>
-										<td width="30%">&nbsp;&nbsp;<label for="{$name}-{$permissionName}" style="display:inline;border:none;font-weight:bold;">{$permissionName}</label></td>
-										<td style="font-size:10px;">{$permission.description} (default: {($permission.default) ? "allow" : "deny"})</td>
-									</tr>
-								{/foreach}
-							{/if}
-						</table>
-					</div>
-				{/if}
-			{/foreach}
-		</div>
-	{/if}
-
 	{if hasPermission("editAccounts")}
 		<input type="submit" value="Save account" />
+	{/if}
+
+	{if hasPermission("editPermissions")}
+
+			<label data-tip="A user can be specifically allowed or denied to perform a certain action.<br />
+			By setting a user permission, the value you set overrides the group roles<br />
+			(example: the user group is allowed to submit comments, but you set the user<br />
+			specifically not to be allowed to - then the user won't be allowed to, despite<br />
+			being assigned to a group that is allowed to.)">User permissions <a>(?)</a></label>
+			<div id="roles">
+				{foreach from=$modules key=name item=module}
+					{if $module.manifest}
+						<div class="role_module">
+							<h3>{ucfirst($module.name)} <span onClick="Accounts.moduleState('arrow_{$module.folderName}', '{$module.folderName}')" style="float: right; padding: 0px;"><div id="arrow_{$module.folderName}" class="arrow" style="cursor: pointer;">&rarr;</div></span></h3>
+							<div id="{$module.folderName}" style="display: none;">
+								<table width="100%">
+									{if $module.manifest}
+										{foreach from=$module.manifest key=permissionName item=permission}
+											<tr>
+												<td width="12%" style="text-align:center;">
+													<select name="{$name}-{$permissionName}" id="{$name}-{$permissionName}" {if !hasPermission("editAccounts")}disabled="disabled"{/if}>
+														<option value="" selected>-</option>
+														<option value="1">Allow</option>
+														<option value="0">Deny</option>
+													</select>
+												</td>
+												<td width="30%">&nbsp;&nbsp;<label for="{$name}-{$permissionName}" style="display:inline;border:none;font-weight:bold;">{$permissionName}</label></td>
+												<td style="font-size:10px;">{$permission.description} (default: {($permission.default) ? "allow" : "deny"})</td>
+											</tr>
+										{/foreach}
+									{/if}
+								</table>
+							</div>
+						</div>
+					{/if}
+				{/foreach}
+				{if hasPermission("editAccounts")}
+					<input type="submit" value="Save account" />
+				{/if}
+			</div>
 	{/if}
 </form>

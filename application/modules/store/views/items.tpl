@@ -25,10 +25,10 @@
 						<td width="5%"><img style="opacity:1;" src="https://wow.zamimg.com/images/wow/icons/small/{$item.icon}.jpg" /></td>
 						<td width="30%" data-tip="{$item.description}"><b class="q{$item.quality}">{character_limiter($item.name, 20)}</b></td>
 						<td width="20%" {if array_key_exists("title", $item) && $item.title}class="item_group"{/if}>
-							{if array_key_exists("title", $item) && $item.title}
+							{if array_key_exists("title", $item) && array_key_exists("orderNumber", $item) && $item.title}
 								<div class="group_actions" style="display:none;">
 									{if hasPermission("canEditGroups")}
-									<a href="javascript:void(0)" onClick="Items.renameGroup({$item.group}, this)" data-tip="Rename group"><img src="{$url}application/themes/admin/images/icons/black16x16/ic_edit.png" /></a>&nbsp;
+									<a href="javascript:void(0)" onClick="Items.editGroup({$item.group}, this)" data-tip="Edit group"><img src="{$url}application/themes/admin/images/icons/black16x16/ic_edit.png" /></a>&nbsp;
 									{/if}
 
 									{if hasPermission("canRemoveGroups")}
@@ -37,7 +37,8 @@
 									</a>
 									{/if}
 								</div>
-								<div class="group_title">{$item.title}</div>
+								<div class="group_title" style="float: left;">{$item.title}</div>
+								<div class="group_order" style="float: right; display: block; margin-right: 10px;">Nr: <abbr class="group_order_number" style="padding: 0px;">{$item.orderNumber}</abbr></div>
 							{/if}
 						</td>
 						<td width="30%">
@@ -271,6 +272,9 @@
 	<form onSubmit="Items.create(this, true); return false">
 		<label for="title">Group name</label>
 		<input type="text" name="title" id="title" />
+
+		<label for="order" data-tip="Specify an order, it will be sorted ascending by group order">Group order</label>
+		<input type="text" name="order" id="order" />
 
 		<input type="submit" value="Submit group" />
 	</form>

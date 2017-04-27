@@ -47,10 +47,11 @@ class Admin_items extends MX_Controller
 		requirePermission("canAddGroups");
 
 		$data["title"] = $this->input->post("title");
+		$data["orderNumber"] = $this->input->post("order");
 
 		if(!$data['title'])
 		{
-			die("UI.alert('The fields can\'t be empty')");
+			die("UI.alert('The following fields can\'t be empty: [Title]')");
 		}
 
 		$this->items_model->addGroup($data);
@@ -293,8 +294,9 @@ class Admin_items extends MX_Controller
 		}
 
 		$data["title"] = $this->input->post("title");
+		$data["orderNumber"] = $this->input->post("order");
 
-		if(!$data["title"])
+		if(!$data["title"] || !$data["orderNumber"])
 		{
 			die();
 		}
